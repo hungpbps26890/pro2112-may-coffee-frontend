@@ -7,6 +7,7 @@ import Home from "./pages/Home/Home";
 import Menu from "./pages/Menu/Menu";
 import DrinkDetail from "./pages/DrinkDetail/DrinkDetail";
 import Cart from "./pages/Cart/Cart";
+import FormContainer from "./pages/FormContainer/FormContainer";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/menu/category/:id" element={<Menu />} />
         <Route path="/drinks/:id" element={<DrinkDetail />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/form" element={<FormContainer />} />
       </Routes>
       <Footer />
     </>
