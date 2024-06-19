@@ -1,12 +1,33 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
 import { NumericFormat } from "react-number-format";
+import {
+  getAllPaymentMethod,
+  getAllVoucher,
+  getVoucherById,
+} from "../../services/CartService";
 
 const Cart = () => {
   const { cart, updateItemQuantity, removeFromCart } = useContext(StoreContext);
+  const [paymentMethods, setPaymentMethods] = useState([]);
+  const [vouchers, setVouchers] = useState([]);
+  const [voucherId, setVoucherId] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(cart.totalPrice);
 
-  console.log("Cart: ", cart);
+  useEffect(() => {
+    getPaymentMethods();
+    getVouchers();
+  }, []);
+  useEffect(() => {
+    setVoucherId(voucherId);
+    handleTotalPrice();
+  }, [voucherId]);
+  useEffect(() => {
+    setTotalPrice(totalPrice);
+  }, [totalPrice]);
+
+  console.log("Cart: ", cart, paymentMethods);
 
   const increaseItemQuantity = (id, quantity) => {
     const data = { id, quantity: quantity + 1 };
@@ -24,6 +45,33 @@ const Cart = () => {
 
   const handleRemoveFromCart = (id) => {
     removeFromCart(id);
+  };
+
+  const getPaymentMethods = async () => {
+    const res = await getAllPaymentMethod();
+    if (res && res.result) {
+      setPaymentMethods(res.result);
+    }
+  };
+
+  const getVouchers = async () => {
+    const res = await getAllVoucher();
+    if (res && res.result) {
+      setVouchers(res.result);
+    }
+  };
+
+  const handleTotalPrice = async () => {
+    if (voucherId === 0) setTotalPrice(cart.totalPrice);
+    else {
+      let res = await getVoucherById(voucherId);
+      if (res && res.result) {
+        let voucher = res.result;
+        if (voucher.amount < 1)
+          setTotalPrice(cart.totalPrice - cart.totalPrice * voucher.amount);
+        else setTotalPrice(cart.totalPrice - voucher.amount);
+      }
+    }
   };
 
   return (
@@ -97,12 +145,12 @@ const Cart = () => {
                         <div className="d-flex justify-content-evenly align-content-stretch">
                           <button
                             className="btn btn-outline-light"
-                            onClick={() =>
+                            onClick={() => {
                               decreaseItemQuantity(
                                 cartItem.id,
                                 cartItem.quantity
-                              )
-                            }
+                              );
+                            }}
                           >
                             <i className="fa-solid fa-minus text-danger"></i>
                           </button>
@@ -176,7 +224,7 @@ const Cart = () => {
                 <h5 className="cart-text">Grand Total</h5>
                 <h5 className="cart-text text-danger">
                   <NumericFormat
-                    value={cart.totalPrice}
+                    value={totalPrice}
                     displayType="text"
                     thousandSeparator=","
                     suffix=" đ"
@@ -257,8 +305,52 @@ const Cart = () => {
                     id="paymentMethod"
                     className="form-select"
                   >
-                    <option value="1">COD</option>
-                    <option value="2">VNPay</option>
+                    {paymentMethods &&
+                      paymentMethods.map((paymentMethod, index) => (
+                        <option key={index} value={paymentMethod.id}>
+                          {paymentMethod.name}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="voucher" className="form-label">
+                    Voucher
+                  </label>
+                  <select
+                    name="voucher"
+                    id="voucher"
+                    className="form-select"
+                    onChange={(e) => {
+                      setVoucherId(e.target.value);
+                    }}
+                  >
+                    <option key={0} value={0} selected={true}>
+                      --------
+                    </option>
+                    {vouchers &&
+                      vouchers.map((voucher, index) => (
+                        <option key={index} value={voucher.id}>
+                          {voucher.discountCode.includes("SHIP") && (
+                            <NumericFormat
+                              value={voucher.amount}
+                              displayType="text"
+                              thousandSeparator=","
+                              prefix="FREESHIP "
+                              suffix=" đ"
+                            />
+                          )}
+                          {!voucher.discountCode.includes("SHIP") && (
+                            <NumericFormat
+                              value={voucher.amount}
+                              displayType="text"
+                              thousandSeparator=","
+                              prefix="DISCOUNT "
+                              suffix=" %"
+                            />
+                          )}
+                        </option>
+                      ))}
                   </select>
                 </div>
                 <button className="btn btn-warning">Check out</button>

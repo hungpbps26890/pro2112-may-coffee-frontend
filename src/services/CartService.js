@@ -10,3 +10,9 @@ export const putUpdateItemQuantity = (data) =>
 
 export const deleteRemoveItemFromCart = (id) =>
   axios.delete(`/api/carts/cart-item/${id}`);
+
+export const getAllPaymentMethod = () => axios.get("/api/payment-methods");
+
+export const getAllVoucher = () => axios.get("/api/vouchers");
+
+export const getVoucherById = (id) => axios.get("/api/vouchers/" + id);
