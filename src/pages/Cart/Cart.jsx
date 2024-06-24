@@ -1,33 +1,15 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
 import { NumericFormat } from "react-number-format";
-import {
-  getAllPaymentMethod,
-  getAllVoucher,
-  getVoucherById,
-} from "../../services/CartService";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const { cart, updateItemQuantity, removeFromCart } = useContext(StoreContext);
-  const [paymentMethods, setPaymentMethods] = useState([]);
-  const [vouchers, setVouchers] = useState([]);
-  const [voucherId, setVoucherId] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(cart.totalPrice);
 
-  useEffect(() => {
-    getPaymentMethods();
-    getVouchers();
-  }, []);
-  useEffect(() => {
-    setVoucherId(voucherId);
-    handleTotalPrice();
-  }, [voucherId]);
-  useEffect(() => {
-    setTotalPrice(totalPrice);
-  }, [totalPrice]);
+  const navigator = useNavigate();
 
-  console.log("Cart: ", cart, paymentMethods);
+  console.log("Cart: ", cart);
 
   const increaseItemQuantity = (id, quantity) => {
     const data = { id, quantity: quantity + 1 };
@@ -47,30 +29,12 @@ const Cart = () => {
     removeFromCart(id);
   };
 
-  const getPaymentMethods = async () => {
-    const res = await getAllPaymentMethod();
-    if (res && res.result) {
-      setPaymentMethods(res.result);
-    }
-  };
-
-  const getVouchers = async () => {
-    const res = await getAllVoucher();
-    if (res && res.result) {
-      setVouchers(res.result);
-    }
-  };
-
-  const handleTotalPrice = async () => {
-    if (voucherId === 0) setTotalPrice(cart.totalPrice);
-    else {
-      let res = await getVoucherById(voucherId);
-      if (res && res.result) {
-        let voucher = res.result;
-        if (voucher.amount < 1)
-          setTotalPrice(cart.totalPrice - cart.totalPrice * voucher.amount);
-        else setTotalPrice(cart.totalPrice - voucher.amount);
-      }
+  const handleCheckout = () => {
+    if (cart.cartItems.length > 0) {
+      navigator("/checkout");
+    } else {
+      toast.info("Your cart is empty, please add some drink to cart!");
+      navigator("/menu");
     }
   };
 
@@ -78,11 +42,11 @@ const Cart = () => {
     <div className="container mt-3 shadow-sm rounded py-3">
       <div className="row mb-3">
         <div className="card border-0">
-          <h4>Your cart</h4>
+          <h4>Your Cart</h4>
           <div className="table-responsive">
             <table className="table">
               <thead>
-                <tr className="text-center table-light">
+                <tr className="text-center">
                   <th>Drink</th>
                   <th>Name</th>
                   <th>Price</th>
@@ -128,8 +92,8 @@ const Cart = () => {
                           {cartItem.size && cartItem.size.character}
                         </span>
                       </td>
-                      <td width={300}>
-                        <div className="d-flex justify-content-md-start flex-wrap">
+                      <td style={{ maxWidth: 150 }}>
+                        <div className="d-flex justify-content-center flex-wrap">
                           {cartItem.toppings.length > 0 &&
                             cartItem.toppings.map((topping) => (
                               <span
@@ -145,12 +109,12 @@ const Cart = () => {
                         <div className="d-flex justify-content-evenly align-content-stretch">
                           <button
                             className="btn btn-outline-light"
-                            onClick={() => {
+                            onClick={() =>
                               decreaseItemQuantity(
                                 cartItem.id,
                                 cartItem.quantity
-                              );
-                            }}
+                              )
+                            }
                           >
                             <i className="fa-solid fa-minus text-danger"></i>
                           </button>
@@ -194,18 +158,18 @@ const Cart = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col-md-6 mb-3">
+        <div className="ms-auto col-md-6 mb-3">
           <div className="card h-100 border-0">
-            <h4>Cart Info</h4>
+            <h4>Cart Totals</h4>
             <hr />
             <div>
               <div className="d-flex justify-content-between">
-                <p className="cart-text">Quantity</p>
-                <p className="cart-text">{cart.totalItems}</p>
+                <p className="card-text">Quantity</p>
+                <p className="card-text">{cart.totalItems}</p>
               </div>
               <div className="d-flex justify-content-between">
-                <p className="cart-text">Subtotal</p>
-                <p className="cart-text">
+                <p className="card-text">Subtotal</p>
+                <p className="card-text">
                   <NumericFormat
                     value={cart.totalPrice}
                     displayType="text"
@@ -214,147 +178,28 @@ const Cart = () => {
                   />
                 </p>
               </div>
-
-              <div className="d-flex justify-content-between">
-                <p className="cart-text">Shipping cost</p>
-                <p className="cart-text">Free</p>
-              </div>
               <hr />
               <div className="d-flex justify-content-between">
-                <h5 className="cart-text">Grand Total</h5>
-                <h5 className="cart-text text-danger">
+                <h6 className="card-text">Total</h6>
+                <h6 className="card-text text-danger">
                   <NumericFormat
-                    value={totalPrice}
+                    value={cart.totalPrice}
                     displayType="text"
                     thousandSeparator=","
                     suffix=" đ"
                   />
-                </h5>
+                </h6>
               </div>
               <hr />
-            </div>
-          </div>
-        </div>
-        <div className="col-md-6 mb-3">
-          <div className="card h-100 border-0">
-            <h4>Delivery Info</h4>
-            <hr />
-            <div>
-              <form>
-                <div className="mb-3">
-                  <label htmlFor="name" className="form-label">
-                    Fullname
-                  </label>
-                  <input type="text" className="form-control" />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="mobile" className="form-label">
-                    Mobile
-                  </label>
-                  <input type="text" className="form-control" />
-                </div>
-                <div className="row mb-3">
-                  <div className="col">
-                    <label htmlFor="streetAddress" className="form-label">
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="streetAddress"
-                      id="streetAddress"
-                      placeholder="Street address"
-                    />
-                  </div>
-                </div>
-                <div className="row mb-3">
-                  <div className="col">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="ward"
-                      id="ward"
-                      placeholder="Ward"
-                    />
-                  </div>
-                  <div className="col">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="district"
-                      id="district"
-                      placeholder="District"
-                    />
-                  </div>
-                  <div className="col">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="city"
-                      id="city"
-                      placeholder="City"
-                    />
-                  </div>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="paymentMethod" className="form-label">
-                    Payment
-                  </label>
-                  <select
-                    name="paymentMethod"
-                    id="paymentMethod"
-                    className="form-select"
-                  >
-                    {paymentMethods &&
-                      paymentMethods.map((paymentMethod, index) => (
-                        <option key={index} value={paymentMethod.id}>
-                          {paymentMethod.name}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="voucher" className="form-label">
-                    Voucher
-                  </label>
-                  <select
-                    name="voucher"
-                    id="voucher"
-                    className="form-select"
-                    onChange={(e) => {
-                      setVoucherId(e.target.value);
-                    }}
-                  >
-                    <option key={0} value={0} selected={true}>
-                      --------
-                    </option>
-                    {vouchers &&
-                      vouchers.map((voucher, index) => (
-                        <option key={index} value={voucher.id}>
-                          {voucher.discountCode.includes("SHIP") && (
-                            <NumericFormat
-                              value={voucher.amount}
-                              displayType="text"
-                              thousandSeparator=","
-                              prefix="FREESHIP "
-                              suffix=" đ"
-                            />
-                          )}
-                          {!voucher.discountCode.includes("SHIP") && (
-                            <NumericFormat
-                              value={voucher.amount}
-                              displayType="text"
-                              thousandSeparator=","
-                              prefix="DISCOUNT "
-                              suffix=" %"
-                            />
-                          )}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-                <button className="btn btn-warning">Check out</button>
-              </form>
+              <div className="d-flex justify-content-end">
+                <button
+                  className="btn btn-outline-white text-white "
+                  style={{ backgroundColor: "#e57905" }}
+                  onClick={handleCheckout}
+                >
+                  Check out
+                </button>
+              </div>
             </div>
           </div>
         </div>
