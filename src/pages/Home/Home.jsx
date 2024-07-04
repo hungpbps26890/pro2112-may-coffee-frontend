@@ -3,9 +3,11 @@ import { fetchGetAllDrinks } from "../../services/DrinkService";
 import { Link } from "react-router-dom";
 import HomeBannerCarousel from "./HomeBannerCarousel";
 import { NumericFormat } from "react-number-format";
+import { getVouchers } from "../../services/HomeService";
 
 const Home = () => {
   const [drinks, setDrinks] = useState([]);
+  const [vouchers, setVouchers] = useState([]);
 
   const getAllDrinks = async () => {
     const res = await fetchGetAllDrinks();
