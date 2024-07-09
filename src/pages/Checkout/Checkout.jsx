@@ -14,6 +14,10 @@ import {
   apiGetPublicProvinces,
   apiGetPublicWards,
 } from "../../services/VNProvinceService";
+import {
+  fetchGetAllVouchers,
+  fetchGetVoucherById,
+} from "../../services/VoucherService";
 
 const Checkout = () => {
   const [provinces, setProvinces] = useState([]);
@@ -24,6 +28,9 @@ const Checkout = () => {
   const [ward, setWard] = useState({ id: null, name: "" });
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [user, setUser] = useState();
+  const [vouchers, setVouchers] = useState([]);
+  const [voucher, setVoucher] = useState();
+  const [voucherId, setVoucherId] = useState();
   const [initialValues, setInitialValues] = useState({
     firstName: "",
     lastName: "",
@@ -36,6 +43,7 @@ const Checkout = () => {
       district: "",
       province: "",
     },
+    voucherId: 0,
   });
 
   const { cart, getCartByUser } = useContext(StoreContext);
@@ -45,10 +53,23 @@ const Checkout = () => {
   console.log("Cart: ", cart);
   console.log("User: ", user);
   console.log("Payment Methods: ", paymentMethods);
+  console.log("vouchers: ", vouchers);
+  console.log("voucher: ", voucher);
 
   useEffect(() => {
     getAllPaymentMethods();
+    getAllVouchers();
   }, []);
+
+  useEffect(() => {
+    getVoucherById(voucherId);
+    console.log(voucher);
+  }, [voucherId]);
+
+  useEffect(() => {
+    setVoucher(voucher);
+    cart
+  }, [voucher]);
 
   useEffect(() => {
     setUser(cart.user);
@@ -78,6 +99,27 @@ const Checkout = () => {
           value: paymentMethod.id,
         }))
       );
+    }
+  };
+
+  const getAllVouchers = async () => {
+    const res = await fetchGetAllVouchers();
+    if (res && res.result) {
+      const vouchersData = res.result;
+      setVouchers(
+        vouchersData.map((voucher) => ({
+          key: voucher.amount,
+          value: voucher.id,
+        }))
+      );
+    }
+  };
+
+  const getVoucherById = async (voucherId) => {
+    const res = await fetchGetVoucherById(voucherId);
+    if (res && res.result) {
+      const voucherData = res.result;
+      setVoucher(voucherData);
     }
   };
 
@@ -386,6 +428,17 @@ const Checkout = () => {
                         />
                       </h6>
                     </div>
+                    <hr />
+                    <FormikControl
+                      control="select"
+                      label="Voucher"
+                      name="voucherId"
+                      options={vouchers}
+                      onChange={(e) => {
+                        console.log(e.target.value);
+                        setVoucherId(e.target.value);
+                      }}
+                    />
                     <hr />
                     <div className="d-flex justify-content-end">
                       <button
