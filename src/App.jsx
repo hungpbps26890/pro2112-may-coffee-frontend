@@ -19,6 +19,7 @@ import Order from "./pages/Order/Order";
 import OrderDetails from "./pages/Order/OrderDetails";
 import OAuth2LoginHandler from "./pages/Login/OAuth2LoginHandler";
 import Address from "./components/Address/Address";
+import i18n from './i18n/i18n'
 
 const App = () => {
   const { pathname } = useLocation();

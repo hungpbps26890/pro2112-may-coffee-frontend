@@ -9,8 +9,11 @@ import {
   fetchGetDrinksByCategoryId,
 } from "../../services/DrinkService";
 import { NumericFormat } from "react-number-format";
+import {useTranslation} from 'react-i18next'
+
 
 const Menu = () => {
+  const {t} = useTranslation();
   const [categories, setCategories] = useState([]);
   const [drinks, setDrinks] = useState([]);
   const [category, setCategory] = useState({ name: "Menu" });

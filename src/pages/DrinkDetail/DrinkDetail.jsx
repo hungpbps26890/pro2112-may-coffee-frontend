@@ -7,8 +7,9 @@ import {
 import { StoreContext } from "../../context/StoreContext";
 import { Field, Form, Formik } from "formik";
 import { NumericFormat } from "react-number-format";
-
+import {useTranslation} from 'react-i18next'
 const DrinkDetail = () => {
+  const {t} = useTranslation();
   const [drink, setDrink] = useState({});
   const [drinks, setDrinks] = useState([]);
   const [drinkPrice, setDrinkPrice] = useState(0);
@@ -147,7 +148,7 @@ const DrinkDetail = () => {
                     <Form>
                       {drink.drinkSizes && drink.drinkSizes.length > 0 && (
                         <div className="mb-2">
-                          <p className="card-text">Size</p>
+                          <p className="card-text">{t('Size')}</p>
                           <div className="d-flex flex-wrap">
                             <Field name="sizeId">
                               {({ field }) => {
@@ -186,7 +187,7 @@ const DrinkDetail = () => {
 
                       {drink.toppings && drink.toppings.length > 0 && (
                         <div className="mb-2">
-                          <p className="card-text">Topping</p>
+                          <p className="card-text">{t('Topping')}</p>
                           <div className="d-flex flex-wrap">
                             <Field name="toppings">
                               {({ field }) => {
@@ -230,7 +231,7 @@ const DrinkDetail = () => {
                         style={{ backgroundColor: "#E57905" }}
                         type="submit"
                       >
-                        Add to cart
+                        {t('menuAddtoCart')}
                       </button>
                     </Form>
                   )}
@@ -241,12 +242,12 @@ const DrinkDetail = () => {
         </div>
         <div className="card border-0">
           <hr />
-          <h4 className="card-title">Description</h4>
+          <h4 className="card-title">{t('menuDescription')}</h4>
           <p className="card-text">{drink.description}</p>
           <hr />
         </div>
         <div className="card border-0">
-          <h4 className="card-title">Related Drink</h4>
+          <h4 className="card-title">{t('menuRelatedDrink')}</h4>
           <div className="related-drink row">
             {drinks &&
               drinks.length &&

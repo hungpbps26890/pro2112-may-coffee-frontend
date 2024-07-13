@@ -2,7 +2,18 @@ import React, { useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
 import { postLogout } from "../../services/AuthService";
+import {useTranslation} from 'react-i18next'
+
+
+
 const NavBar = () => {
+  const {t} = useTranslation();
+
+  const {i18n} = useTranslation()
+  const changeLanguage = (lng) =>{
+    i18n.changeLanguage(lng)
+  }
+
   const { token, setToken, cart } = useContext(StoreContext);
 
   const navigator = useNavigate();
@@ -38,22 +49,41 @@ const NavBar = () => {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <NavLink className="nav-link" to={"/home"}>
-                Home
+              {t('navHome')}
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" to={"/menu"}>
-                Menu
+              {t('navMenu')}
               </NavLink>
             </li>
 
             {token && (
               <li className="nav-item">
                 <NavLink className="nav-link" to={"/order"}>
-                  Order
+                {t('navOrder')}
                 </NavLink>
               </li>
             )}
+             <button
+                    className="btn"  
+                    onClick={() => changeLanguage('vi')}
+                  >
+                    <img src="/src/img/coVietNam.png" alt="" width={30} />
+                  </button>
+             <button
+                    className="btn"  
+                  onClick={() => changeLanguage('en')}
+                  >
+                    <img src="/src/img/coNuocAnh.png" alt="" width={30} />
+                  </button>
+             <button
+                    className="btn"  
+                  onClick={() => changeLanguage('cn')}
+                  >
+                    <img src="/src/img/coNuocTrung.webp" alt="" width={30} />
+                  </button>
+           
           </ul>
           <ul className="navbar-nav">
             {token && (
@@ -80,7 +110,7 @@ const NavBar = () => {
                     className="btn btn-outline-secondary rounded-5"
                     style={{ fontSize: 13, fontWeight: 500 }}
                   >
-                    Login
+                    {t('navLogin')}
                   </button>
                 </Link>
               </li>
@@ -98,12 +128,12 @@ const NavBar = () => {
                 <ul className="dropdown-menu dropdown-menu-lg-end">
                   <li>
                     <NavLink className="dropdown-item" to={"/profile"}>
-                      Profile
+                    {t('navProfile')}
                     </NavLink>
                   </li>
                   <li>
                     <NavLink className="dropdown-item" to={"/change-password"}>
-                      Change Password
+                    {t('navChangepassword')}
                     </NavLink>
                   </li>
                   <li>
@@ -111,7 +141,7 @@ const NavBar = () => {
                   </li>
                   <li>
                     <button className="dropdown-item" onClick={handleLogout}>
-                      Log out
+                    {t('navLogout')}
                     </button>
                   </li>
                 </ul>

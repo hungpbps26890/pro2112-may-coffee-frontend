@@ -4,8 +4,11 @@ import { NumericFormat } from "react-number-format";
 import { Formik, Form } from "formik";
 import FormikControl from "../../components/FormControl/FormikControl";
 import { fetchGetOrderById } from "../../services/OrderService";
+import {useTranslation} from 'react-i18next'
+
 
 const OrderDetails = () => {
+  const {t} = useTranslation();
   const [order, setOrder] = useState();
   const [initialValues, setInitialValues] = useState({
     firstName: "",
@@ -64,18 +67,18 @@ const OrderDetails = () => {
     <div className="container mt-3 shadow-sm rounded py-3">
       <div className="row mb-3">
         <div className="card border-0">
-          <h4>Your Order</h4>
+          <h4>{t('Your Orders')}</h4>
           <div className="table-responsive">
             <table className="table">
               <thead>
                 <tr className="text-center ">
                   <th>#</th>
-                  <th>Drink Name</th>
-                  <th>Price</th>
-                  <th>Size</th>
-                  <th>Topping</th>
-                  <th>Quantity</th>
-                  <th>Total</th>
+                  <th>{t('Drink')}</th>
+                  <th>{t('Price')}</th>
+                  <th>{t('Size')}</th>
+                  <th>{t('Topping')}</th>
+                  <th>{t('Quantity')}</th>
+                  <th>{t('Total')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -142,7 +145,7 @@ const OrderDetails = () => {
               <div className="row">
                 <div className="col-md-6 mb-3">
                   <div className="card h-100 border-0">
-                    <h4>Delivery Information</h4>
+                    <h4>{t('Delivery')}</h4>
                     <hr />
                     <div>
                       <div className="row">
@@ -222,15 +225,15 @@ const OrderDetails = () => {
                 </div>
                 <div className="col-md-6 mb-3">
                   <div className="card h-100 border-0">
-                    <h4>Order Totals</h4>
+                    <h4>{t('Order Totals')}</h4>
                     <hr />
                     <div>
                       <div className="d-flex justify-content-between">
-                        <p className="card-text">Quantity</p>
+                        <p className="card-text">{t('Quantity')}</p>
                         <p className="card-text">{order.totalItems}</p>
                       </div>
                       <div className="d-flex justify-content-between">
-                        <p className="card-text">Subtotal</p>
+                        <p className="card-text">{t('Subtotal')}</p>
                         <p className="card-text">
                           <NumericFormat
                             value={order.totalPrice}
@@ -242,12 +245,12 @@ const OrderDetails = () => {
                       </div>
 
                       <div className="d-flex justify-content-between">
-                        <p className="card-text">Delivery Fee</p>
+                        <p className="card-text">{t('Delivery Fee')}</p>
                         <p className="card-text">Free</p>
                       </div>
                       <hr />
                       <div className="d-flex justify-content-between">
-                        <h6 className="card-text">Total</h6>
+                        <h6 className="card-text">{t('Total')}</h6>
                         <h6 className="card-text text-danger">
                           <NumericFormat
                             value={order.totalPrice}

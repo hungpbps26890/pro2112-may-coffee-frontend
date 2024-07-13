@@ -6,8 +6,11 @@ import { putChangePassword } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextError from "../../components/TextError/TextError";
+import {useTranslation} from 'react-i18next'
+
 
 const ChangePassword = () => {
+  const {t} = useTranslation();
   const navigator = useNavigate();
 
   const [passwordInvalid, setPasswordInvalid] = useState("");
@@ -56,7 +59,7 @@ const ChangePassword = () => {
       <div className="row">
         <div className="card col-10 col-md-6 mx-auto shadow-sm border-0 rounded-4">
           <div className="card-body">
-            <h3 className="text-center">Register</h3>
+            <h3 className="text-center">{t('Register')}</h3>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -93,10 +96,10 @@ const ChangePassword = () => {
 
                   <div className="mb-3">
                     <button type="submit" className="btn btn-primary me-2">
-                      Save
+                      {t('Save')}
                     </button>
                     <button type="reset" className="btn btn-secondary">
-                      Cancel
+                      {t('Cancel')}
                     </button>
                   </div>
                 </Form>

@@ -4,8 +4,11 @@ import { Link } from "react-router-dom";
 import HomeBannerCarousel from "./HomeBannerCarousel";
 import { NumericFormat } from "react-number-format";
 import { getVouchers } from "../../services/HomeService";
+import {useTranslation} from 'react-i18next'
 
 const Home = () => {
+  const {t} = useTranslation();
+
   const [drinks, setDrinks] = useState([]);
   const [vouchers, setVouchers] = useState([]);
 
@@ -26,7 +29,7 @@ const Home = () => {
     <>
       <HomeBannerCarousel />
       <div className="container shadow-sm rounded pt-3">
-        <h4>Popular Drinks</h4>
+        <h4>{t('Popular Drinks')}</h4>
         <div className="popular-drink row  ">
           {drinks &&
             drinks.length &&

@@ -4,8 +4,12 @@ import { NumericFormat } from "react-number-format";
 import { format as dateFormat } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import {useTranslation} from 'react-i18next'
+
+
 
 const Order = () => {
+  const {t} = useTranslation();
   const [orders, setOrders] = useState([]);
 
   const navigator = useNavigate();
@@ -31,17 +35,17 @@ const Order = () => {
     <div className="container mt-3 shadow-sm rounded py-3">
       <div className="row mb-3">
         <div className="card border-0">
-          <h4>Your Orders</h4>
+          <h4>{t('Your Orders')}</h4>
           <div className="table-responsive">
             <table className="table">
               <thead>
                 <tr className="text-center">
                   <th>#</th>
-                  <th>Date</th>
-                  <th>Total</th>
-                  <th>Order Status</th>
-                  <th>Payment Method</th>
-                  <th>Payment Status</th>
+                  <th>{t('Date')}</th>
+                  <th>{t('Total')}</th>
+                  <th>{t('Order Status')}</th>
+                  <th>{t('Payment Method')}</th>
+                  <th>{t('Payment Status')}</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -71,7 +75,7 @@ const Order = () => {
                             navigator(`/order-details/${order.id}`)
                           }
                         >
-                          Details
+                          {t('Details')}
                         </button>
                         <button
                           className={`btn btn-outline-danger ${
@@ -79,7 +83,7 @@ const Order = () => {
                           }`}
                           onClick={handleCancel}
                         >
-                          Cancel
+                          {t('Cancel')}
                         </button>
                       </td>
                     </tr>
