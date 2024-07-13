@@ -19,7 +19,7 @@ import {
   fetchGetVoucherById,
 } from "../../services/VoucherService";
 import {useTranslation} from 'react-i18next'
-
+import { createVNPayPayment } from "../../services/PaymentService";
 
 const Checkout = () => {
   const {t} = useTranslation();
@@ -72,7 +72,7 @@ const Checkout = () => {
 
   useEffect(() => {
     setVoucher(voucher);
-    cart
+    cart;
   }, [voucher]);
 
   useEffect(() => {
@@ -223,11 +223,22 @@ const Checkout = () => {
       const createdOrder = res.result;
       console.log("Created order: ", createdOrder);
 
-      toast.success(res.message);
+      if (createdOrder.paymentMethod.name === "VNPAY") {
+        const paymentResponse = await createVNPayPayment(
+          createdOrder.totalPrice,
+          createdOrder.id
+        );
 
-      getCartByUser();
+        if (paymentResponse && paymentResponse.code == 1000) {
+          console.log("Payment response: ", paymentResponse);
+          window.location.href = paymentResponse.result.paymentUrl;
+        }
+      } else {
+        toast.success(res.message);
+        getCartByUser();
 
-      navigator("/order");
+        navigator("/order");
+      }
     }
   };
 
