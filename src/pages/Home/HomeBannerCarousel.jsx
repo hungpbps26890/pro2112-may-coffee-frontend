@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { getVouchers } from "../../services/HomeService";
 
 const HomeBannerCarousel = () => {
-  
   const [bannerImages, setBannerImages] = useState([]);
 
   useEffect(() => {
@@ -12,7 +11,10 @@ const HomeBannerCarousel = () => {
   const handleBannerImages = async () => {
     const res = await getVouchers();
     if (res && res.result) {
-      setBannerImages(res.result);
+      const data = res.result;
+      const reverseData = data.reverse();
+      console.log("test" + reverseData);
+      setBannerImages(reverseData);
     }
   };
 

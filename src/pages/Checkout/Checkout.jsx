@@ -50,12 +50,6 @@ const Checkout = () => {
 
   const navigator = useNavigate();
 
-  console.log("Cart: ", cart);
-  console.log("User: ", user);
-  console.log("Payment Methods: ", paymentMethods);
-  console.log("vouchers: ", vouchers);
-  console.log("voucher: ", voucher);
-
   useEffect(() => {
     getAllPaymentMethods();
     getAllVouchers();
@@ -68,7 +62,8 @@ const Checkout = () => {
 
   useEffect(() => {
     setVoucher(voucher);
-    cart
+    console.log("voucher: ", voucher);
+    
   }, [voucher]);
 
   useEffect(() => {
