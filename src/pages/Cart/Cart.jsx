@@ -3,8 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
 import { NumericFormat } from "react-number-format";
 import { toast } from "react-toastify";
+import {useTranslation} from 'react-i18next'
+
 
 const Cart = () => {
+  const {t} = useTranslation();
   const { cart, updateItemQuantity, removeFromCart } = useContext(StoreContext);
 
   const navigator = useNavigate();
@@ -42,19 +45,19 @@ const Cart = () => {
     <div className="container mt-3 shadow-sm rounded py-3">
       <div className="row mb-3">
         <div className="card border-0">
-          <h4>Your Cart</h4>
+          <h4>{t('Your Cart')}</h4>
           <div className="table-responsive">
             <table className="table">
               <thead>
                 <tr className="text-center">
-                  <th>Drink</th>
-                  <th>Name</th>
-                  <th>Price</th>
-                  <th>Size</th>
-                  <th>Topping</th>
-                  <th>Quantity</th>
-                  <th>Total</th>
-                  <th>Remove</th>
+                  <th>{t('Drink')}</th>
+                  <th>{t('Name')}</th>
+                  <th>{t('Price')}</th>
+                  <th>{t('Size')}</th>
+                  <th>{t('Topping')}</th>
+                  <th>{t('Quantity')}</th>
+                  <th>{t('Total')}</th>
+                  <th>{t('Remove')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -160,15 +163,15 @@ const Cart = () => {
       <div className="row">
         <div className="ms-auto col-md-6 mb-3">
           <div className="card h-100 border-0">
-            <h4>Cart Totals</h4>
+            <h4>{t('Cart Totals')}</h4>
             <hr />
             <div>
               <div className="d-flex justify-content-between">
-                <p className="card-text">Quantity</p>
+                <p className="card-text">{t('Quantity')}</p>
                 <p className="card-text">{cart.totalItems}</p>
               </div>
               <div className="d-flex justify-content-between">
-                <p className="card-text">Subtotal</p>
+                <p className="card-text">{t('Subtotal')}</p>
                 <p className="card-text">
                   <NumericFormat
                     value={cart.totalPrice}
@@ -180,7 +183,7 @@ const Cart = () => {
               </div>
               <hr />
               <div className="d-flex justify-content-between">
-                <h6 className="card-text">Total</h6>
+                <h6 className="card-text">{t('Total')}</h6>
                 <h6 className="card-text text-danger">
                   <NumericFormat
                     value={cart.totalPrice}
@@ -197,7 +200,7 @@ const Cart = () => {
                   style={{ backgroundColor: "#e57905" }}
                   onClick={handleCheckout}
                 >
-                  Check out
+                  {t('btnCheckout')}
                 </button>
               </div>
             </div>

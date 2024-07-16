@@ -5,8 +5,12 @@ import FormikControl from "../../components/FormControl/FormikControl";
 import { postRegister } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import {useTranslation} from 'react-i18next'
 
 const Register = () => {
+  
+  
+  const {t} = useTranslation();
   const navigator = useNavigate();
 
   const initialValues = {
@@ -59,7 +63,7 @@ const Register = () => {
       <div className="row">
         <div className="card col-10 col-md-6 mx-auto shadow-sm border-0 rounded-4">
           <div className="card-body">
-            <h3 className="text-center">Register</h3>
+            <h3 className="text-center">{t('Register')}</h3>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -105,10 +109,10 @@ const Register = () => {
 
                   <div className="mb-3">
                     <button type="submit" className="btn btn-primary me-2">
-                      Register
+                    {t('Register')}
                     </button>
                     <button type="reset" className="btn btn-secondary">
-                      Cancel
+                    {t('Cancel')}
                     </button>
                   </div>
                 </Form>

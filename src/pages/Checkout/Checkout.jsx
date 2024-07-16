@@ -19,11 +19,16 @@ import {
   fetchAllValidVouchers,
   fetchGetVoucherById,
 } from "../../services/VoucherService";
+import {useTranslation} from 'react-i18next'
 import { createVNPayPayment } from "../../services/PaymentService";
 import { postPaymentMethodBank } from "../../services/PaymentMethodBankService";
 
 const Checkout = () => {
+<<<<<<< HEAD
   const { cart, getCartByUser } = useContext(StoreContext);
+=======
+  const {t} = useTranslation();
+>>>>>>> d0dd126c2d8023b05f289777db2586f64fbe8100
 
   const [provinces, setProvinces] = useState([]);
   const [province, setProvince] = useState({ id: null, name: "" });
@@ -260,18 +265,18 @@ const Checkout = () => {
     <div className="container mt-3 shadow-sm rounded py-3">
       <div className="row mb-3">
         <div className="card border-0">
-          <h4>Your Order</h4>
+          <h4>{t('Your Order')}</h4>
           <div className="table-responsive">
             <table className="table">
               <thead>
                 <tr className="text-center ">
                   <th>#</th>
-                  <th>Drink Name</th>
-                  <th>Price</th>
-                  <th>Size</th>
-                  <th>Topping</th>
-                  <th>Quantity</th>
-                  <th>Total</th>
+                  <th>{t('Drink')}</th>
+                  <th>{t('Price')}</th>
+                  <th>{t('Size')}</th>
+                  <th>{t('Topping')}</th>
+                  <th>{t('Quantity')}</th>
+                  <th>{t('Total')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -343,7 +348,7 @@ const Checkout = () => {
             <div className="row">
               <div className="col-md-6 mb-3">
                 <div className="card h-100 border-0">
-                  <h4>Delivery Information</h4>
+                  <h4>{t('Delivery')}</h4>
                   <hr />
                   <div>
                     <div className="row">
@@ -422,15 +427,15 @@ const Checkout = () => {
               </div>
               <div className="col-md-6 mb-3">
                 <div className="card h-100 border-0">
-                  <h4>Order Totals</h4>
+                  <h4>{t('Order Totals')}</h4>
                   <hr />
                   <div>
                     <div className="d-flex justify-content-between">
-                      <p className="card-text">Quantity</p>
+                      <p className="card-text">{t('Quantity')}</p>
                       <p className="card-text">{cart.totalItems}</p>
                     </div>
                     <div className="d-flex justify-content-between">
-                      <p className="card-text">Subtotal</p>
+                      <p className="card-text">{t('Subtotal')}</p>
                       <p className="card-text">
                         <NumericFormat
                           value={cart.totalPrice}
@@ -441,7 +446,7 @@ const Checkout = () => {
                       </p>
                     </div>
                     <div className="d-flex justify-content-between">
-                      <p className="card-text">Delivery Fee</p>
+                      <p className="card-text">{t('Delivery Fee')}</p>
                       <p className="card-text">Free</p>
                     </div>
                     <hr />
@@ -455,7 +460,7 @@ const Checkout = () => {
                     />
                     <hr />
                     <div className="d-flex justify-content-between">
-                      <h6 className="card-text">Total</h6>
+                      <h6 className="card-text">{t('Subtotal')}</h6>
                       <h6 className="card-text text-danger">
                         <NumericFormat
                           value={discountTotalPrice}
@@ -473,7 +478,7 @@ const Checkout = () => {
                         className="btn btn-outline-white text-white"
                         style={{ backgroundColor: "#e57905" }}
                       >
-                        Place Order
+                        {t('Place Order')}
                       </button>
                     </div>
                   </div>

@@ -4,8 +4,12 @@ import * as Yup from "yup";
 import FormikControl from "../../components/FormControl/FormikControl";
 import { fetchGetMyInfo, putUpdateMyInfo } from "../../services/UserService";
 import { toast } from "react-toastify";
+import {useTranslation} from 'react-i18next'
+
+
 
 const Profile = () => {
+  const {t} = useTranslation();
   const [myInfo, setMyInfo] = useState();
 
   useEffect(() => {
@@ -76,7 +80,7 @@ const Profile = () => {
       <div className="row">
         <div className="card col-10 col-md-6 mx-auto shadow-sm border-0 rounded-4">
           <div className="card-body">
-            <h3 className="text-center">Profile</h3>
+            <h3 className="text-center">{t('navProfile')}</h3>
             <Formik
               initialValues={myInfo || initialValues}
               validationSchema={validationSchema}
@@ -115,10 +119,10 @@ const Profile = () => {
 
                   <div className="mb-3">
                     <button type="submit" className="btn btn-primary me-2">
-                      Save
+                      {t('Save')}
                     </button>
                     <button type="reset" className="btn btn-secondary">
-                      Cancel
+                      {t('Cancel')}
                     </button>
                   </div>
                 </Form>
