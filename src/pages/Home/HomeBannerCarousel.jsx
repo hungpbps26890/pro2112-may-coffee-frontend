@@ -14,7 +14,15 @@ const HomeBannerCarousel = () => {
       const data = res.result;
       const reverseData = data.reverse();
       console.log("test" + reverseData);
-      setBannerImages(reverseData);
+
+      const beginDate = reverseData.beginDate;
+      const endDate = reverseData.endDate;
+      const validData = reverseData.filter(
+        (e) =>
+          new Date(e.beginDate) < new Date() && new Date(e.endDate) > new Date()
+      );
+      console.log("test2" + JSON.stringify(validData));
+      setBannerImages(validData);
     }
   };
 

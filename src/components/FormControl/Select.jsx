@@ -3,7 +3,7 @@ import { Field, ErrorMessage } from "formik";
 import TextError from "../TextError/TextError";
 
 const Select = (props) => {
-  const { label, name, options, ...rest } = props;
+  const { label, name, options, setValue, ...rest } = props;
   return (
     <div className={`mb-3`}>
       <label htmlFor={name} className="form-label">
@@ -14,6 +14,7 @@ const Select = (props) => {
         id={name}
         name={name}
         className="form-select"
+        onClick={(e) => setValue(e.target.value)}
         {...rest}
       >
         {options.map((option) => {

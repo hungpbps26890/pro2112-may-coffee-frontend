@@ -16,11 +16,15 @@ import {
 } from "../../services/VNProvinceService";
 import {
   fetchGetAllVouchers,
+  fetchAllValidVouchers,
   fetchGetVoucherById,
 } from "../../services/VoucherService";
 import { createVNPayPayment } from "../../services/PaymentService";
+import { postPaymentMethodBank } from "../../services/PaymentMethodBankService";
 
 const Checkout = () => {
+  const { cart, getCartByUser } = useContext(StoreContext);
+
   const [provinces, setProvinces] = useState([]);
   const [province, setProvince] = useState({ id: null, name: "" });
   const [districts, setDistricts] = useState([]);
@@ -30,14 +34,14 @@ const Checkout = () => {
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [user, setUser] = useState();
   const [vouchers, setVouchers] = useState([]);
-  const [voucher, setVoucher] = useState();
+  const [voucher, setVoucher] = useState({});
   const [voucherId, setVoucherId] = useState();
   const [initialValues, setInitialValues] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phoneNumber: "",
-    paymentMethodId: 1,
+    paymentMethodId: 13,
     address: {
       streetNumber: "",
       ward: "",
@@ -47,7 +51,7 @@ const Checkout = () => {
     voucherId: 0,
   });
 
-  const { cart, getCartByUser } = useContext(StoreContext);
+  const [discountTotalPrice, setDiscountTotalPrice] = useState(cart.totalPrice);
 
   const navigator = useNavigate();
 
@@ -63,17 +67,19 @@ const Checkout = () => {
 
   useEffect(() => {
     setVoucher(voucher);
-<<<<<<< HEAD
+    if (voucher.amount < 1)
+      setDiscountTotalPrice(cart.totalPrice * (1 - voucher.amount));
+    else setDiscountTotalPrice(cart.totalPrice - voucher.amount);
     console.log("voucher: ", voucher);
-    
-=======
-    cart;
->>>>>>> 6321236fd8d145798ad29bd22bba35b5a8f67992
   }, [voucher]);
 
   useEffect(() => {
     setUser(cart.user);
   }, [cart]);
+
+  useEffect(() => {
+    setDiscountTotalPrice(discountTotalPrice);
+  }, [discountTotalPrice]);
 
   useEffect(() => {
     if (user) {
@@ -103,7 +109,7 @@ const Checkout = () => {
   };
 
   const getAllVouchers = async () => {
-    const res = await fetchGetAllVouchers();
+    const res = await fetchAllValidVouchers();
     if (res && res.result) {
       const vouchersData = res.result;
       setVouchers(
@@ -190,7 +196,7 @@ const Checkout = () => {
   });
 
   const onSubmit = (values) => {
-    console.log("Form values: ", values);
+    console.log("Form values: ", values); //values.voucherId
 
     const data = {
       address: {
@@ -200,6 +206,7 @@ const Checkout = () => {
         province: province.name,
       },
       paymentMethod: { id: values.paymentMethodId },
+      voucher: voucher,
     };
 
     console.log("Data: ", data);
@@ -218,6 +225,17 @@ const Checkout = () => {
     if (res && res.result) {
       const createdOrder = res.result;
       console.log("Created order: ", createdOrder);
+
+      const paymentMethodBankData = {
+        owner: "NMH",
+        creditCard: "123456789789",
+        totalPrice: createdOrder.totalPrice,
+        date: createdOrder.createDate,
+        paymentMethodId: createdOrder.paymentMethod.id,
+        bankId: 1,
+        orderId: createdOrder.id,
+      };
+      postPaymentMethodBank(paymentMethodBankData);
 
       if (createdOrder.paymentMethod.name === "VNPAY") {
         const paymentResponse = await createVNPayPayment(
@@ -422,17 +440,25 @@ const Checkout = () => {
                         />
                       </p>
                     </div>
-
                     <div className="d-flex justify-content-between">
                       <p className="card-text">Delivery Fee</p>
                       <p className="card-text">Free</p>
                     </div>
                     <hr />
+
+                    <FormikControl
+                      control="select"
+                      label="Discount"
+                      name="voucherId"
+                      options={vouchers}
+                      setValue={setVoucherId}
+                    />
+                    <hr />
                     <div className="d-flex justify-content-between">
                       <h6 className="card-text">Total</h6>
                       <h6 className="card-text text-danger">
                         <NumericFormat
-                          value={cart.totalPrice}
+                          value={discountTotalPrice}
                           displayType="text"
                           thousandSeparator=","
                           suffix=" đ"
@@ -440,17 +466,7 @@ const Checkout = () => {
                       </h6>
                     </div>
                     <hr />
-                    <FormikControl
-                      control="select"
-                      label="Voucher"
-                      name="voucherId"
-                      options={vouchers}
-                      onChange={(e) => {
-                        console.log(e.target.value);
-                        setVoucherId(e.target.value);
-                      }}
-                    />
-                    <hr />
+
                     <div className="d-flex justify-content-end">
                       <button
                         type="submit"
