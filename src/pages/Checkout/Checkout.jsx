@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
 import { NumericFormat } from "react-number-format";
@@ -21,7 +21,6 @@ import {
 } from "../../services/VoucherService";
 import { useTranslation } from "react-i18next";
 import { createVNPayPayment } from "../../services/PaymentService";
-import { postPaymentMethodBank } from "../../services/PaymentMethodBankService";
 
 const Checkout = () => {
   const { cart, getCartByUser } = useContext(StoreContext);
@@ -36,6 +35,8 @@ const Checkout = () => {
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [user, setUser] = useState();
   const [vouchers, setVouchers] = useState([]);
+  const [arrVoucher, setArrVoucher] = useState([]);
+  const [shippingFee, setShippingFee] = useState();
   const [voucher, setVoucher] = useState({});
   const [voucherId, setVoucherId] = useState();
   const [initialValues, setInitialValues] = useState({
@@ -45,15 +46,40 @@ const Checkout = () => {
     phoneNumber: "",
     paymentMethodId: 13,
     address: {
-      streetNumber: "",
-      ward: "",
-      district: "",
-      province: "",
+      streetNumber: "cu chinh lan",
+      ward: "26974",
+      district: "766",
+      province: "79",
     },
     voucherId: 0,
   });
 
-  const [discountTotalPrice, setDiscountTotalPrice] = useState(cart.totalPrice);
+  const handFeeShip = () => {
+    if (district.id === 761) {
+      setShippingFee(12000);
+      return 12000;
+    } else if (
+      district.id === 784 ||
+      district.id === 765 ||
+      district.id === 764 ||
+      district.id === 766 ||
+      district.id === 767 ||
+      district.id === 762 ||
+      district.id === 777
+    ) {
+      setShippingFee(23000);
+      return 23000;
+    } else {
+      setShippingFee(46000);
+      return 46000;
+    }
+  };
+
+  const feeShip = useMemo(() => handFeeShip(), [district]);
+
+  const [discountTotalPrice, setDiscountTotalPrice] = useState(
+    cart.totalPrice + feeShip
+  );
 
   const navigator = useNavigate();
 
@@ -70,8 +96,8 @@ const Checkout = () => {
   useEffect(() => {
     setVoucher(voucher);
     if (voucher.amount < 1)
-      setDiscountTotalPrice(cart.totalPrice * (1 - voucher.amount));
-    else setDiscountTotalPrice(cart.totalPrice - voucher.amount);
+      setDiscountTotalPrice((cart.totalPrice + feeShip) * (1 - voucher.amount));
+    else setDiscountTotalPrice(cart.totalPrice - voucher.amount + feeShip);
     console.log("voucher: ", voucher);
   }, [voucher]);
 
@@ -114,6 +140,7 @@ const Checkout = () => {
     const res = await fetchAllValidVouchers();
     if (res && res.result) {
       const vouchersData = res.result;
+      setArrVoucher(vouchersData);
       setVouchers(
         vouchersData.map((voucher) => ({
           key: voucher.amount,
@@ -209,6 +236,7 @@ const Checkout = () => {
       },
       paymentMethod: { id: values.paymentMethodId },
       voucher: voucher,
+      feeShip: shippingFee,
     };
 
     console.log("Data: ", data);
@@ -227,17 +255,6 @@ const Checkout = () => {
     if (res && res.result) {
       const createdOrder = res.result;
       console.log("Created order: ", createdOrder);
-
-      const paymentMethodBankData = {
-        owner: "NMH",
-        creditCard: "123456789789",
-        totalPrice: createdOrder.totalPrice,
-        date: createdOrder.createDate,
-        paymentMethodId: createdOrder.paymentMethod.id,
-        bankId: 1,
-        orderId: createdOrder.id,
-      };
-      postPaymentMethodBank(paymentMethodBankData);
 
       if (createdOrder.paymentMethod.name === "VNPAY") {
         const paymentResponse = await createVNPayPayment(
@@ -393,7 +410,7 @@ const Checkout = () => {
                           label="Ward"
                           options={wards}
                           name="address.ward"
-                          setValue={setWard}
+                          setValue={() => setWard}
                         />
                       </div>
                       <div className="col-md-4">
@@ -401,7 +418,7 @@ const Checkout = () => {
                           label="District"
                           options={districts}
                           name="address.district"
-                          setValue={setDistrict}
+                          setValue={() => setDistrict}
                         />
                       </div>
                       <div className="col-md-4">
@@ -409,7 +426,7 @@ const Checkout = () => {
                           label="Province"
                           options={provinces}
                           name="address.province"
-                          setValue={setProvince}
+                          setValue={() => setProvince}
                         />
                       </div>
                     </div>
@@ -444,17 +461,121 @@ const Checkout = () => {
                     </div>
                     <div className="d-flex justify-content-between">
                       <p className="card-text">{t("Delivery Fee")}</p>
-                      <p className="card-text">Free</p>
+                      <p className="card-text">{feeShip}</p>
                     </div>
                     <hr />
 
-                    <FormikControl
-                      control="select"
-                      label="Discount"
-                      name="voucherId"
-                      options={vouchers}
-                      setValue={setVoucherId}
-                    />
+                    <div className="d-flex justify-content-between">
+                      <button
+                        type="button"
+                        className="btn w-100"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"
+                      >
+                        <div className="d-flex justify-content-between">
+                          <span className="text-warning">Khuyến mãi</span>
+                        </div>
+                        {voucher.amount && (
+                          <div className="d-flex justify-content-between mt-1">
+                            <span className="card-text">
+                              {voucher.amount > 1
+                                ? "Miễn phí giao hàng"
+                                : "Giảm"}
+                            </span>
+                            <span className="card-text">
+                              {voucher.amount > 1 ? (
+                                <NumericFormat
+                                  value={voucher.amount}
+                                  displayType="text"
+                                  thousandSeparator=","
+                                  suffix=" đ"
+                                />
+                              ) : (
+                                voucher.amount * 100 + "%"
+                              )}
+                            </span>
+                          </div>
+                        )}
+                      </button>
+                      <>
+                        {/* Modal */}
+                        <div
+                          className="modal fade"
+                          id="staticBackdrop"
+                          data-bs-backdrop="static"
+                          data-bs-keyboard="false"
+                          tabIndex={-1}
+                          aria-labelledby="staticBackdropLabel"
+                          aria-hidden="true"
+                        >
+                          <div className="modal-dialog modal-dialog-centered">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <h1
+                                  className="modal-title fs-5"
+                                  id="staticBackdropLabel"
+                                >
+                                  Khuyến mãi
+                                </h1>
+                                <button
+                                  type="button"
+                                  className="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                  onClick={() => {
+                                    setVoucherId(0);
+                                    setVoucher({});
+                                  }}
+                                />
+                              </div>
+                              {arrVoucher.length > 0 &&
+                                arrVoucher.map((e, i) => (
+                                  <button
+                                    type="button"
+                                    className="btn modal-body container-fluid"
+                                    data-bs-dismiss="modal"
+                                    onClick={() => setVoucherId(e.id)}
+                                  >
+                                    <div className="card">
+                                      <img
+                                        src={e.image}
+                                        className="card-img-top"
+                                        alt="Voucher image"
+                                      />
+                                      <div className="card-body">
+                                        <h5 className="card-title">
+                                          {e.amount && (
+                                            <div className="d-flex justify-content-between mt-1">
+                                              <span className="card-text">
+                                                {e.amount > 1
+                                                  ? "Miễn phí giao hàng"
+                                                  : "Giảm"}
+                                              </span>
+                                              <span className="card-text">
+                                                {e.amount > 1 ? (
+                                                  <NumericFormat
+                                                    value={e.amount}
+                                                    displayType="text"
+                                                    thousandSeparator=","
+                                                    suffix=" đ"
+                                                  />
+                                                ) : (
+                                                  e.amount * 100 + "%"
+                                                )}
+                                              </span>
+                                            </div>
+                                          )}
+                                        </h5>
+                                      </div>
+                                    </div>
+                                  </button>
+                                ))}
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    </div>
+
                     <hr />
                     <div className="d-flex justify-content-between">
                       <h6 className="card-text">{t("Subtotal")}</h6>
