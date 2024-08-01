@@ -4,17 +4,19 @@ import {
   fetchGetDrinkById,
   fetchGetDrinksByCategoryId,
 } from "../../services/DrinkService";
+import { fetchGetAllReview } from "../../services/ReviewService";
 import { StoreContext } from "../../context/StoreContext";
 import { Field, Form, Formik } from "formik";
 import { NumericFormat } from "react-number-format";
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from "react-i18next";
 const DrinkDetail = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [drink, setDrink] = useState({});
   const [drinks, setDrinks] = useState([]);
   const [drinkPrice, setDrinkPrice] = useState(0);
   const [toppingPrice, seTtoppingPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState();
+  const [reviews, setReviews] = useState([]);
   const [initialValues, setInitialValues] = useState({
     drinkId: "",
     sizeId: "",
@@ -65,6 +67,15 @@ const DrinkDetail = () => {
       setDrinks(res.result);
       console.log("Drink data by category: ", res);
     }
+  };
+
+  useEffect(() => {
+    getAllReview();
+  }, []);
+
+  const getAllReview = async () => {
+    const res = await fetchGetAllReview();
+    if (res && res.result) setReviews(res.result);
   };
 
   const onSubmit = (values) => {
@@ -148,7 +159,7 @@ const DrinkDetail = () => {
                     <Form>
                       {drink.drinkSizes && drink.drinkSizes.length > 0 && (
                         <div className="mb-2">
-                          <p className="card-text">{t('Size')}</p>
+                          <p className="card-text">{t("Size")}</p>
                           <div className="d-flex flex-wrap">
                             <Field name="sizeId">
                               {({ field }) => {
@@ -187,7 +198,7 @@ const DrinkDetail = () => {
 
                       {drink.toppings && drink.toppings.length > 0 && (
                         <div className="mb-2">
-                          <p className="card-text">{t('Topping')}</p>
+                          <p className="card-text">{t("Topping")}</p>
                           <div className="d-flex flex-wrap">
                             <Field name="toppings">
                               {({ field }) => {
@@ -225,13 +236,73 @@ const DrinkDetail = () => {
                           </div>
                         </div>
                       )}
-
+                      <div className="d-flex justify-content-between">
+                        <button
+                          type="button"
+                          className="btn w-100"
+                          data-bs-toggle="modal"
+                          data-bs-target="#staticBackdrop"
+                        >
+                          <div className="d-flex justify-content-between">
+                            <span className="text-warning">Xem bình luận</span>
+                          </div>
+                        </button>
+                        <>
+                          {/* Modal */}
+                          <div
+                            className="modal fade"
+                            id="staticBackdrop"
+                            data-bs-backdrop="static"
+                            data-bs-keyboard="false"
+                            tabIndex={-1}
+                            aria-labelledby="staticBackdropLabel"
+                            aria-hidden="true"
+                          >
+                            <div className="modal-dialog modal-dialog-centered">
+                              <div className="modal-content">
+                                <div className="modal-header">
+                                  <h1
+                                    className="modal-title fs-5"
+                                    id="staticBackdropLabel"
+                                  >
+                                    Bình luận
+                                  </h1>
+                                  <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                  />
+                                </div>
+                                {reviews.length > 0 &&
+                                  reviews.map((e, i) => (
+                                    <button
+                                      type="button"
+                                      className="btn modal-body container-fluid"
+                                      data-bs-dismiss="modal"
+                                    >
+                                      <div className="card">
+                                        <div className="card-body">
+                                          <h5 className="card-title">
+                                            <div className="d-flex justify-content-between mt-1">
+                                              A
+                                            </div>
+                                          </h5>
+                                        </div>
+                                      </div>
+                                    </button>
+                                  ))}
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      </div>
                       <button
                         className="btn btn-outline-white w-100 text-white py-2 mt-4"
                         style={{ backgroundColor: "#E57905" }}
                         type="submit"
                       >
-                        {t('menuAddtoCart')}
+                        {t("menuAddtoCart")}
                       </button>
                     </Form>
                   )}
@@ -242,12 +313,12 @@ const DrinkDetail = () => {
         </div>
         <div className="card border-0">
           <hr />
-          <h4 className="card-title">{t('menuDescription')}</h4>
+          <h4 className="card-title">{t("menuDescription")}</h4>
           <p className="card-text">{drink.description}</p>
           <hr />
         </div>
         <div className="card border-0">
-          <h4 className="card-title">{t('menuRelatedDrink')}</h4>
+          <h4 className="card-title">{t("menuRelatedDrink")}</h4>
           <div className="related-drink row">
             {drinks &&
               drinks.length &&
