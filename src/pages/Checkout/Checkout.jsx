@@ -461,10 +461,15 @@ const Checkout = () => {
                     </div>
                     <div className="d-flex justify-content-between">
                       <p className="card-text">{t("Delivery Fee")}</p>
-                      <p className="card-text">{feeShip}</p>
+                      <p className="card-text">
+                        <NumericFormat
+                          value={feeShip}
+                          displayType="text"
+                          thousandSeparator=","
+                          suffix=" đ"
+                        />
+                      </p>
                     </div>
-                    <hr />
-
                     <div className="d-flex justify-content-between">
                       <button
                         type="button"
