@@ -46,10 +46,10 @@ const Checkout = () => {
     phoneNumber: "",
     paymentMethodId: 13,
     address: {
-      streetNumber: "cu chinh lan",
-      ward: "26974",
-      district: "766",
-      province: "79",
+      streetNumber: "",
+      ward: "",
+      district: "",
+      province: "",
     },
     voucherId: 0,
   });
@@ -96,8 +96,13 @@ const Checkout = () => {
   useEffect(() => {
     setVoucher(voucher);
     if (voucher.amount < 1)
-      setDiscountTotalPrice((cart.totalPrice + feeShip) * (1 - voucher.amount));
-    else setDiscountTotalPrice(cart.totalPrice - voucher.amount + feeShip);
+      setDiscountTotalPrice(
+        Math.ceil((cart.totalPrice + feeShip) * (1 - voucher.amount))
+      );
+    else
+      setDiscountTotalPrice(
+        Math.ceil(cart.totalPrice - voucher.amount + feeShip)
+      );
     console.log("voucher: ", voucher);
   }, [voucher]);
 
@@ -410,7 +415,7 @@ const Checkout = () => {
                           label="Ward"
                           options={wards}
                           name="address.ward"
-                          setValue={() => setWard}
+                          setValue={setWard}
                         />
                       </div>
                       <div className="col-md-4">
@@ -418,7 +423,7 @@ const Checkout = () => {
                           label="District"
                           options={districts}
                           name="address.district"
-                          setValue={() => setDistrict}
+                          setValue={setDistrict}
                         />
                       </div>
                       <div className="col-md-4">
@@ -426,7 +431,7 @@ const Checkout = () => {
                           label="Province"
                           options={provinces}
                           name="address.province"
-                          setValue={() => setProvince}
+                          setValue={setProvince}
                         />
                       </div>
                     </div>
