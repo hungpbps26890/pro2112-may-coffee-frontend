@@ -125,7 +125,7 @@ const Order = () => {
                             })
                           }
                         >
-                          Đánh giá
+                          {t("Review")}
                         </button>
                         <button
                           className={`btn btn-outline-danger ${
@@ -153,7 +153,7 @@ const Order = () => {
                 <div className="modal-content">
                   <div className="modal-header">
                     <h1 className="modal-title fs-5" id="staticBackdropLabel">
-                      Đánh giá
+                    {t("Review")}
                     </h1>
                     <button
                       type="button"
@@ -193,7 +193,7 @@ const Order = () => {
                           <div className="col-12 py-2">
                             <FormikControl
                               control="textarea"
-                              label="Bình luận"
+                              label="Comment"
                               name="comment"
                             />
                           </div>
@@ -204,7 +204,7 @@ const Order = () => {
                             className="btn btn-secondary"
                             data-bs-dismiss="modal"
                           >
-                            Đóng
+                            {t("Cancel")}
                           </button>
 
                           <button
@@ -213,7 +213,7 @@ const Order = () => {
                             style={{ backgroundColor: "#e57905" }}
                             data-bs-dismiss="modal"
                           >
-                            Gửi
+                            {t("Send")}
                           </button>
                         </div>
                       </Form>

@@ -29,7 +29,7 @@ const Home = () => {
     <>
       <HomeBannerCarousel />
       <div className="container shadow-sm rounded pt-3">
-        <h4>`{t('Popular Drinks')}`</h4>
+        <h4>{t('Popular Drinks')}</h4>
         <div className="popular-drink row  ">
           {drinks &&
             drinks.length &&

@@ -244,11 +244,11 @@ const DrinkDetail = () => {
                           data-bs-target="#staticBackdrop"
                         >
                           <div className="d-flex justify-content-between">
-                            <span className="text-warning">Xem bình luận</span>
+                            <span className="text-warning">{t('Comment')}</span>
                           </div>
                         </button>
                         <>
-                          {/* Modal */}
+                    
                           <div
                             className="modal fade"
                             id="staticBackdrop"
@@ -265,7 +265,7 @@ const DrinkDetail = () => {
                                     className="modal-title fs-5"
                                     id="staticBackdropLabel"
                                   >
-                                    Bình luận
+                                    {t('Comment')}
                                   </h1>
                                   <button
                                     type="button"

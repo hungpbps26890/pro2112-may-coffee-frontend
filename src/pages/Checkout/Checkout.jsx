@@ -483,7 +483,7 @@ const Checkout = () => {
                         data-bs-target="#staticBackdrop"
                       >
                         <div className="d-flex justify-content-between">
-                          <span className="text-warning">Khuyến mãi</span>
+                          <span className="text-warning">{t('Voucher')}</span>
                         </div>
                         {voucher.amount && (
                           <div className="d-flex justify-content-between mt-1">
@@ -525,7 +525,7 @@ const Checkout = () => {
                                   className="modal-title fs-5"
                                   id="staticBackdropLabel"
                                 >
-                                  Khuyến mãi
+                                  {t('Voucher')}
                                 </h1>
                                 <button
                                   type="button"
