@@ -44,7 +44,7 @@ const Checkout = () => {
     lastName: "",
     email: "",
     phoneNumber: "",
-    paymentMethodId: 13,
+    paymentMethodId: 1,
     address: {
       streetNumber: "cu chinh lan",
       ward: "26974",
@@ -95,14 +95,17 @@ const Checkout = () => {
 
   useEffect(() => {
     setVoucher(voucher);
-    if (voucher.amount < 1)
-      setDiscountTotalPrice(
-        Math.ceil((cart.totalPrice + feeShip) * (1 - voucher.amount))
-      );
-    else
-      setDiscountTotalPrice(
-        Math.ceil(cart.totalPrice - voucher.amount + feeShip)
-      );
+    let discountTotalPrice = 0;
+    if (voucher.amount < 1) {
+      discountTotalPrice = (cart.totalPrice + feeShip) * (1 - voucher.amount);
+      discountTotalPrice = Math.round(discountTotalPrice / 1000) * 1000;
+      setDiscountTotalPrice(discountTotalPrice);
+    } else {
+      discountTotalPrice = cart.totalPrice - voucher.amount + feeShip;
+      discountTotalPrice = Math.round(discountTotalPrice / 1000) * 1000;
+      setDiscountTotalPrice(discountTotalPrice);
+    }
+
     console.log("voucher: ", voucher);
   }, [voucher]);
 
