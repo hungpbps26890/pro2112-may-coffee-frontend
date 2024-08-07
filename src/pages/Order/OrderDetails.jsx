@@ -242,11 +242,6 @@ const OrderDetails = () => {
                           />
                         </p>
                       </div>
-
-                      <div className="d-flex justify-content-between">
-                        <p className="card-text">{t("Delivery Fee")}</p>
-                        <p className="card-text">Free</p>
-                      </div>
                       <hr />
                       <div className="d-flex justify-content-between">
                         <h6 className="card-text">{t("Total")}</h6>

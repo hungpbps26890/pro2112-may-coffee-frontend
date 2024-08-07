@@ -38,7 +38,7 @@ const Checkout = () => {
   const [arrVoucher, setArrVoucher] = useState([]);
   const [shippingFee, setShippingFee] = useState();
   const [voucher, setVoucher] = useState({});
-  const [voucherId, setVoucherId] = useState();
+  const [voucherId, setVoucherId] = useState(-1);
   const [initialValues, setInitialValues] = useState({
     firstName: "",
     lastName: "",
@@ -51,7 +51,7 @@ const Checkout = () => {
       district: "",
       province: "",
     },
-    voucherId: 0,
+    voucherId: -1,
   });
 
   const handFeeShip = () => {
@@ -486,7 +486,7 @@ const Checkout = () => {
                         data-bs-target="#staticBackdrop"
                       >
                         <div className="d-flex justify-content-between">
-                          <span className="text-warning">Khuyến mãi</span>
+                          <span className="text-warning">{t('Voucher')}</span>
                         </div>
                         {voucher.amount && (
                           <div className="d-flex justify-content-between mt-1">
@@ -528,7 +528,7 @@ const Checkout = () => {
                                   className="modal-title fs-5"
                                   id="staticBackdropLabel"
                                 >
-                                  Khuyến mãi
+                                  {t('Voucher')}
                                 </h1>
                                 <button
                                   type="button"
