@@ -236,67 +236,7 @@ const DrinkDetail = () => {
                           </div>
                         </div>
                       )}
-                      <div className="d-flex justify-content-between">
-                        <button
-                          type="button"
-                          className="btn w-100"
-                          data-bs-toggle="modal"
-                          data-bs-target="#staticBackdrop"
-                        >
-                          <div className="d-flex justify-content-between">
-                            <span className="text-warning">Xem bình luận</span>
-                          </div>
-                        </button>
-                        <>
-                          {/* Modal */}
-                          <div
-                            className="modal fade"
-                            id="staticBackdrop"
-                            data-bs-backdrop="static"
-                            data-bs-keyboard="false"
-                            tabIndex={-1}
-                            aria-labelledby="staticBackdropLabel"
-                            aria-hidden="true"
-                          >
-                            <div className="modal-dialog modal-dialog-centered">
-                              <div className="modal-content">
-                                <div className="modal-header">
-                                  <h1
-                                    className="modal-title fs-5"
-                                    id="staticBackdropLabel"
-                                  >
-                                    Bình luận
-                                  </h1>
-                                  <button
-                                    type="button"
-                                    className="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                  />
-                                </div>
-                                {reviews.length > 0 &&
-                                  reviews.map((e, i) => (
-                                    <button
-                                      type="button"
-                                      className="btn modal-body container-fluid"
-                                      data-bs-dismiss="modal"
-                                    >
-                                      <div className="card">
-                                        <div className="card-body">
-                                          <h5 className="card-title">
-                                            <div className="d-flex justify-content-between mt-1">
-                                              A
-                                            </div>
-                                          </h5>
-                                        </div>
-                                      </div>
-                                    </button>
-                                  ))}
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      </div>
+
                       <button
                         className="btn btn-outline-white w-100 text-white py-2 mt-4"
                         style={{ backgroundColor: "#E57905" }}
