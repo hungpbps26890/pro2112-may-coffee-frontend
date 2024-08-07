@@ -38,7 +38,7 @@ const Checkout = () => {
   const [arrVoucher, setArrVoucher] = useState([]);
   const [shippingFee, setShippingFee] = useState();
   const [voucher, setVoucher] = useState({});
-  const [voucherId, setVoucherId] = useState(-1);
+  const [voucherId, setVoucherId] = useState();
   const [initialValues, setInitialValues] = useState({
     firstName: "",
     lastName: "",
@@ -46,10 +46,10 @@ const Checkout = () => {
     phoneNumber: "",
     paymentMethodId: 13,
     address: {
-      streetNumber: "",
-      ward: "",
-      district: "",
-      province: "",
+      streetNumber: "cu chinh lan",
+      ward: "26974",
+      district: "766",
+      province: "79",
     },
     voucherId: -1,
   });
@@ -230,7 +230,7 @@ const Checkout = () => {
   });
 
   const onSubmit = (values) => {
-    console.log("Form values: ", values); //values.voucherId
+    console.log("Form values: ", values);
 
     const data = {
       address: {
@@ -263,7 +263,7 @@ const Checkout = () => {
 
       if (createdOrder.paymentMethod.name === "VNPAY") {
         const paymentResponse = await createVNPayPayment(
-          createdOrder.totalPrice,
+          createdOrder.discountTotalPrice,
           createdOrder.id
         );
 
@@ -483,7 +483,7 @@ const Checkout = () => {
                         data-bs-target="#staticBackdrop"
                       >
                         <div className="d-flex justify-content-between">
-                          <span className="text-warning">{t('Voucher')}</span>
+                          <span className="text-warning">{t("Voucher")}</span>
                         </div>
                         {voucher.amount && (
                           <div className="d-flex justify-content-between mt-1">
@@ -525,7 +525,7 @@ const Checkout = () => {
                                   className="modal-title fs-5"
                                   id="staticBackdropLabel"
                                 >
-                                  {t('Voucher')}
+                                  {t("Voucher")}
                                 </h1>
                                 <button
                                   type="button"
