@@ -38,7 +38,7 @@ const Checkout = () => {
   const [arrVoucher, setArrVoucher] = useState([]);
   const [shippingFee, setShippingFee] = useState();
   const [voucher, setVoucher] = useState({});
-  const [voucherId, setVoucherId] = useState();
+  const [voucherId, setVoucherId] = useState(-1);
   const [initialValues, setInitialValues] = useState({
     firstName: "",
     lastName: "",
@@ -51,7 +51,7 @@ const Checkout = () => {
       district: "",
       province: "",
     },
-    voucherId: 0,
+    voucherId: -1,
   });
 
   const handFeeShip = () => {
