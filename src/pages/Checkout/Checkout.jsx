@@ -46,10 +46,10 @@ const Checkout = () => {
     phoneNumber: "",
     paymentMethodId: 1,
     address: {
-      streetNumber: "cu chinh lan",
-      ward: "26974",
-      district: "766",
-      province: "79",
+      streetNumber: "",
+      ward: "",
+      district: "",
+      province: "",
     },
     voucherId: -1,
   });
