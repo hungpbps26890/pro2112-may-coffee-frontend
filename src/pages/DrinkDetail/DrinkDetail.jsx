@@ -236,7 +236,6 @@ const DrinkDetail = () => {
                           </div>
                         </div>
                       )}
-
                       <button
                         className="btn btn-outline-white w-100 text-white py-2 mt-4"
                         style={{ backgroundColor: "#E57905" }}

@@ -4,8 +4,11 @@ import * as Yup from "yup";
 import FormikControl from "../../components/FormControl/FormikControl";
 import { putForgotPassword } from "../../services/UserService";
 import { toast } from "react-toastify";
+import {useTranslation} from 'react-i18next'
+
 
 const ForgotPassword = () => {
+  const {t} = useTranslation();
   const initialValues = {
     email: "",
   };
@@ -37,7 +40,7 @@ const ForgotPassword = () => {
       <div className="row">
         <div className="card col-10 col-md-6 mx-auto shadow-sm border-0 rounded-4">
           <div className="card-body">
-            <h3 className="text-center">Forgot Password</h3>
+            <h3 className="text-center">{t('Forgot Password')}</h3>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -50,10 +53,10 @@ const ForgotPassword = () => {
 
                   <div className="mb-3">
                     <button type="submit" className="btn btn-primary me-2">
-                      Reset Password
+                    {t('Reset Password')}
                     </button>
                     <button type="reset" className="btn btn-secondary">
-                      Cancel
+                    {t('Cancel')}
                     </button>
                   </div>
                 </Form>

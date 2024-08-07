@@ -96,7 +96,7 @@ const Login = () => {
                         to={"/forgot-password"}
                         className="text-decoration-none ms-5"
                       >
-                        Forgot Password?
+                        {t('Forgot Password')}
                       </Link>
                     </div>
                   </div>

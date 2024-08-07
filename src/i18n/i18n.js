@@ -45,6 +45,13 @@ const resources = {
         "Actions":"Actions",
         "Details":"Details",
         "Your Orders": "Your Orders",
+        "Forgot Password": "Forgot Password",
+        "Reset Password": "Reset Password",
+        "Comment": "Comment",
+        "Voucher": "Voucher",
+        "Review": "Review",
+        "Send": "Send",
+
 
 
 
@@ -95,6 +102,15 @@ const resources = {
         "Payment Status":"Trạng thái thanh toán",
         "Details": "Chi tiết đơn hàng",
         "Your Orders": "Đơn hàng của bạn",
+        "Forgot Password": "Quên mật khẩu",
+        "Reset Password": "Đặt lại mật khẩu",
+        "Comment": "Bình luận",
+        "Voucher": "Khuyến mãi",
+        "Review": "Đánh giá",
+        "Send": "Gửi",
+
+
+
         
 
 
@@ -144,6 +160,15 @@ const resources = {
         "Payment Status":"支付状态",
         "Details": "订单详细信息",
         "Your Orders": "你的订单",
+        "Forgot Password": "忘记密码",
+        "Reset Password": "重设密码",
+        "Comment": "评论",
+        "Voucher": "晋升",
+        "Review": "评价",
+        "Send": "发送",
+
+
+
         
 
 
