@@ -264,7 +264,7 @@ const Checkout = () => {
       const createdOrder = res.result;
       console.log("Created order: ", createdOrder);
 
-      if (createdOrder.paymentMethod.name === "VNPAY") {
+      if (createdOrder.paymentMethod.name === "VnPay") {
         const paymentResponse = await createVNPayPayment(
           createdOrder.discountTotalPrice,
           createdOrder.id
