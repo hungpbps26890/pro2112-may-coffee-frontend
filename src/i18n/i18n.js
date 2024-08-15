@@ -51,6 +51,31 @@ const resources = {
         "Voucher": "Voucher",
         "Review": "Review",
         "Send": "Send",
+        "Footer_P": "Come to May Coffee & Tea for the best experience. May Coffee & Tea – a place for peaceful moments.",
+        "Cà Phê Sữa Đá": "Iced Milk Coffee",   
+        "The Coffee House Sữa Đá": "The Coffee House Iced Milk",
+        "Trà Đào Cam Sả Đá": "Peach Orange Lemongrass Iced Tea",
+        "Cold Brew Phúc Bồn Tử": "Cold Brew Raspberry",
+        "Liên hệ": "Contact",
+        "required": "Required",
+        "First name": "First name",
+        "Last name": "Last name",
+        "Phone number": "Phone number",
+        "Street number": "Street number",
+        "Ward": "Ward",
+        "District": "District",
+        "Province": "Province",
+        "Payment": "Payment",
+        "Birth date": "Birth date",
+        "Current Password": "Current Password",
+        "New Password": "New Password",
+        "Confirmed Password": "Confirmed Password",
+        "Password": "Password",
+        "Please login!": "Please login!",
+
+        
+
+
 
 
 
@@ -108,6 +133,34 @@ const resources = {
         "Voucher": "Khuyến mãi",
         "Review": "Đánh giá",
         "Send": "Gửi",
+        "Footer_P": "Hãy đến với May Coffee & Tea để có những trải nghiệm tuyệt vời nhất. May Coffee & Tea – nơi gửi gắm những khoảng khắc bình yên.",
+        "Cà Phê Sữa Đá": "Cà Phê Sữa Đá",
+        "The Coffee House Sữa Đá": "The Coffee House Sữa Đá",
+        "Trà Đào Cam Sả Đá": "Trà Đào Cam Sả Đá",
+        "Cold Brew Phúc Bồn Tử": "Cold Brew Phúc Bồn Tử",
+        "Liên hệ": "Liên hệ",
+        "required": "Bắt buộc",
+        "First name": "Tên",
+        "Last name": "Họ",
+        "Phone number": "Số điện thoại",
+        "Street number": "Số đường",
+        "Ward": "Xã",
+        "District": "Quận-Huyện",
+        "Province": "Tỉnh",
+        "Payment": "Phương thức thanh toán",
+        "Birth date": "Ngày sinh",
+        "Current Password": "Mật khẩu hiện tại",
+        "New Password": "Mật khẩu mới",
+        "Confirmed Password": "Xác nhận mật khẩu",
+        "Password": "Mật khẩu",
+        "Please login!": "Hãy đăng nhập",
+
+
+
+
+
+
+
 
 
 
@@ -166,6 +219,30 @@ const resources = {
         "Voucher": "晋升",
         "Review": "评价",
         "Send": "发送",
+        "Footer_P": "来到May Coffee & Tea，享受最好的体验。五月咖啡和茶 - 享受宁静时光的地方。",
+        "Cà Phê Sữa Đá": "冰牛奶咖啡",
+        "The Coffee House Sữa Đá": "苏阿达咖啡馆",
+        "Trà Đào Cam Sả Đá": "冰桃橙柠檬草茶",
+        "Cold Brew Phúc Bồn Tử": "冷萃覆盆子",
+        "Liên hệ": "接触",
+        "required": "强制性的",
+        "First name": "姓名",
+        "Last name": "姓",
+        "Phone number": "电话号码",
+        "Street number": "街道号",
+        "Ward": "病房",
+        "District": "区",
+        "Province": "省",
+        "Payment": "支付",
+        "Birth date": "出生日期",
+        "Current Password": "当前密码",
+        "New Password": "新密码",
+        "Confirmed Password": "确认密码",
+        "Password": "密码",
+
+
+
+
 
 
 

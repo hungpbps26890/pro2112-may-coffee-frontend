@@ -20,9 +20,9 @@ const Login = () => {
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email").required("Required"),
+    email: Yup.string().email("Invalid email").required(t('required')),
     password: Yup.string()
-      .required("Required")
+      .required(t('required'))
       .min(8, "Password must be at least 8 characters"),
   });
 
@@ -67,11 +67,11 @@ const Login = () => {
             >
               {(formik) => (
                 <Form>
-                  <FormikControl control="input" label="Email" name="email" />
+                  <FormikControl control="input" label={t('Email')} name="email" />
                   <FormikControl
                     control="input"
                     type="password"
-                    label="Password"
+                    label={t('Password')}
                     name="password"
                   />
 
