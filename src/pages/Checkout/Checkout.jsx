@@ -95,16 +95,14 @@ const Checkout = () => {
 
   useEffect(() => {
     setVoucher(voucher);
-    let discountTotalPrice = 0;
-    if (voucher.amount < 1) {
-      discountTotalPrice = (cart.totalPrice + feeShip) * (1 - voucher.amount);
-      discountTotalPrice = Math.round(discountTotalPrice / 1000) * 1000;
-      setDiscountTotalPrice(discountTotalPrice);
-    } else {
-      discountTotalPrice = cart.totalPrice - voucher.amount + feeShip;
-      discountTotalPrice = Math.round(discountTotalPrice / 1000) * 1000;
-      setDiscountTotalPrice(discountTotalPrice);
-    }
+    if (voucher.amount < 1)
+      setDiscountTotalPrice(
+        Math.ceil((cart.totalPrice + feeShip) * (1 - voucher.amount))
+      );
+    else
+      setDiscountTotalPrice(
+        Math.ceil(cart.totalPrice - voucher.amount + feeShip)
+      );
 
     console.log("voucher: ", voucher);
   }, [voucher]);
@@ -266,7 +264,7 @@ const Checkout = () => {
 
       if (createdOrder.paymentMethod.name === "VNPAY") {
         const paymentResponse = await createVNPayPayment(
-          createdOrder.discountTotalPrice,
+          createdOrder.totalPrice,
           createdOrder.id
         );
 
