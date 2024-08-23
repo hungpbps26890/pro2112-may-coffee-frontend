@@ -45,13 +45,13 @@ const Profile = () => {
   const regexPhoneNumber = /^(84|0[3|5|7|8|9])+([0-9]{8})/;
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email").required("Required"),
+    email: Yup.string().email("Invalid email").required(t('required')),
     phoneNumber: Yup.string()
       .matches(regexPhoneNumber, "Phone number is not valid")
-      .required("Required"),
-    firstName: Yup.string().required("Required"),
-    lastName: Yup.string().required("Required"),
-    dob: Yup.date().required("Required"),
+      .required(t('required')),
+    firstName: Yup.string().required(t('required')),
+    lastName: Yup.string().required(t('required')),
+    dob: Yup.date().required(t('required')),
   });
 
   const onSubmit = (values) => {
@@ -99,23 +99,23 @@ const Profile = () => {
 
                   <FormikControl
                     control="input"
-                    label="Phone number"
+                    label={t("Phone number")}
                     name="phoneNumber"
                   />
 
                   <FormikControl
                     control="input"
-                    label="First name"
+                    label={t('First name')}
                     name="firstName"
                   />
 
                   <FormikControl
                     control="input"
-                    label="Last name"
+                    label={t("Last name")}
                     name="lastName"
                   />
 
-                  <FormikControl control="date" label="Birth date" name="dob" />
+                  <FormikControl control="date" label={t("Birth date")} name="dob" />
 
                   <div className="mb-3">
                     <button type="submit" className="btn btn-primary me-2">

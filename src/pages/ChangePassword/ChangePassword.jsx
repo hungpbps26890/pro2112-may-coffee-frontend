@@ -23,13 +23,13 @@ const ChangePassword = () => {
 
   const validationSchema = Yup.object({
     password: Yup.string()
-      .required("Required")
+      .required(t('required'))
       .min(8, "Password must be at least 8 characters"),
     newPassword: Yup.string()
-      .required("Required")
+      .required(t('required'))
       .min(8, "Password must be at least 8 characters"),
     confirmedNewPassword: Yup.string()
-      .required("Required")
+      .required(t('required'))
       .oneOf(
         [Yup.ref("newPassword")],
         "Confirmed password must be match new password"
@@ -76,21 +76,21 @@ const ChangePassword = () => {
                   <FormikControl
                     control="input"
                     type="password"
-                    label="Current Password"
+                    label={t("Current Password")}
                     name="password"
                   />
 
                   <FormikControl
                     control="input"
                     type="password"
-                    label="New Password"
+                    label={t("New Password")}
                     name="newPassword"
                   />
 
                   <FormikControl
                     control="input"
                     type="password"
-                    label="Confirmed Password"
+                    label={t("Confirmed Password")}
                     name="confirmedNewPassword"
                   />
 

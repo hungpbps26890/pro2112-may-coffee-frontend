@@ -35,14 +35,14 @@ const FormContainer = () => {
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email").required("Required"),
+    email: Yup.string().email("Invalid email").required(t('required')),
     password: Yup.string()
-      .required("Required")
+      .required(t('required'))
       .min(8, "Password must be at least 8 characters"),
     confirmedPassword: Yup.string()
-      .required("Required")
+      .required(t('required'))
       .oneOf([Yup.ref("password")], "Passwords must be match"),
-    birthDate: Yup.date().required("Required").nullable(),
+    birthDate: Yup.date().required(t('required')).nullable(),
   });
 
   const onSubmit = (values) => {

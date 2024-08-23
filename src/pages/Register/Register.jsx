@@ -77,33 +77,33 @@ const Register = () => {
                     <div className="col-6">
                       <FormikControl
                         control="input"
-                        label="Firstname"
+                        label={t("First name")}
                         name="firstName"
                       />
                     </div>
                     <div className="col-6">
                       <FormikControl
                         control="input"
-                        label="Lastname"
+                        label={t("Last name")}
                         name="lastName"
                       />
                     </div>
                   </div>
                   <FormikControl
                     control="input"
-                    label="Phone number"
+                    label={t("Phone number")}
                     name="phoneNumber"
                   />
                   <FormikControl
                     control="input"
                     type="password"
-                    label="Password"
+                    label={t("Password")}
                     name="password"
                   />
                   <FormikControl
                     control="input"
                     type="password"
-                    label="Confirmed password"
+                    label={t("Confirmed Password")}
                     name="confirmedPassword"
                   />
 

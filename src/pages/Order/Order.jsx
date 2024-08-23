@@ -28,7 +28,7 @@ const Order = () => {
 
   const validationSchema = Yup.object({
     rating: Yup.number(),
-    comment: Yup.string().required("Required"),
+    comment: Yup.string().required(t("required")),
   });
 
   useEffect(() => {

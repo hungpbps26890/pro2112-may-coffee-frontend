@@ -216,17 +216,17 @@ const Checkout = () => {
   const regexPhoneNumber = /^(84|0[3|5|7|8|9])+([0-9]{8})/;
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email").required("Required"),
+    email: Yup.string().email("Invalid email").required(t('required')),
     phoneNumber: Yup.string()
       .matches(regexPhoneNumber, "Phone number is not valid")
-      .required("Required"),
-    firstName: Yup.string().required("Required"),
-    lastName: Yup.string().required("Required"),
+      .required(t('required')),
+    firstName: Yup.string().required(t('required')),
+    lastName: Yup.string().required(t('required')),
     address: Yup.object({
-      streetNumber: Yup.string().required("Required"),
-      ward: Yup.string().required("Required"),
-      district: Yup.string().required("Required"),
-      province: Yup.string().required("Required"),
+      streetNumber: Yup.string().required(t('required')),
+      ward: Yup.string().required(t('required')),
+      district: Yup.string().required(t('required')),
+      province: Yup.string().required(t('required')),
     }),
   });
 
@@ -262,7 +262,7 @@ const Checkout = () => {
       const createdOrder = res.result;
       console.log("Created order: ", createdOrder);
 
-      if (createdOrder.paymentMethod.name === "VNPAY") {
+      if (createdOrder.paymentMethod.name === "VnPay") {
         const paymentResponse = await createVNPayPayment(
           createdOrder.totalPrice,
           createdOrder.id
@@ -375,7 +375,7 @@ const Checkout = () => {
                       <div className="col-md-6">
                         <FormikControl
                           control="input"
-                          label="First name"
+                          label={t('First name')}
                           name="firstName"
                           readOnly
                         />
@@ -383,7 +383,7 @@ const Checkout = () => {
                       <div className="col-md-6">
                         <FormikControl
                           control="input"
-                          label="Last name"
+                          label={t("Last name")}
                           name="lastName"
                           readOnly
                         />
@@ -399,21 +399,21 @@ const Checkout = () => {
 
                     <FormikControl
                       control="input"
-                      label="Phone number"
+                      label={t("Phone number")}
                       name="phoneNumber"
                       readOnly
                     />
 
                     <FormikControl
                       control="input"
-                      label="Street number"
+                      label={t("Street number")}
                       name="address.streetNumber"
                     />
 
                     <div className="row">
                       <div className="col-md-4">
                         <SelectAddress
-                          label="Ward"
+                          label={t("Ward")}
                           options={wards}
                           name="address.ward"
                           setValue={setWard}
@@ -421,7 +421,7 @@ const Checkout = () => {
                       </div>
                       <div className="col-md-4">
                         <SelectAddress
-                          label="District"
+                          label={t("District")}
                           options={districts}
                           name="address.district"
                           setValue={setDistrict}
@@ -429,7 +429,7 @@ const Checkout = () => {
                       </div>
                       <div className="col-md-4">
                         <SelectAddress
-                          label="Province"
+                          label={t("Province")}
                           options={provinces}
                           name="address.province"
                           setValue={setProvince}
@@ -438,7 +438,7 @@ const Checkout = () => {
                     </div>
                     <FormikControl
                       control="select"
-                      label="Payment"
+                      label={t("Payment")}
                       name="paymentMethodId"
                       options={paymentMethods}
                     />
