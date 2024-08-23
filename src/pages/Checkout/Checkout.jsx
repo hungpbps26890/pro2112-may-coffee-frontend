@@ -27,7 +27,10 @@ const Checkout = () => {
   const { t } = useTranslation();
 
   const [provinces, setProvinces] = useState([]);
-  const [province, setProvince] = useState({ id: null, name: "" });
+  const [province, setProvince] = useState({
+    id: 79,
+    name: "Thành phô Hồ Chí Minh",
+  });
   const [districts, setDistricts] = useState([]);
   const [district, setDistrict] = useState({ id: null, name: "" });
   const [wards, setWards] = useState([]);
@@ -49,7 +52,7 @@ const Checkout = () => {
       streetNumber: "",
       ward: "",
       district: "",
-      province: "",
+      province: "79",
     },
     voucherId: -1,
   });
@@ -92,6 +95,18 @@ const Checkout = () => {
     getVoucherById(voucherId);
     console.log(voucher);
   }, [voucherId]);
+
+  useEffect(() => {
+    if (voucher.amount < 1)
+      setDiscountTotalPrice(
+        Math.ceil((cart.totalPrice + feeShip) * (1 - voucher.amount))
+      );
+    else if (voucher.amount > 1)
+      setDiscountTotalPrice(
+        Math.ceil(cart.totalPrice - voucher.amount + feeShip)
+      );
+    else setDiscountTotalPrice(Math.ceil(cart.totalPrice + feeShip));
+  }, [shippingFee]);
 
   useEffect(() => {
     setVoucher(voucher);
@@ -216,17 +231,17 @@ const Checkout = () => {
   const regexPhoneNumber = /^(84|0[3|5|7|8|9])+([0-9]{8})/;
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email").required(t('required')),
+    email: Yup.string().email("Invalid email").required(t("required")),
     phoneNumber: Yup.string()
       .matches(regexPhoneNumber, "Phone number is not valid")
-      .required(t('required')),
-    firstName: Yup.string().required(t('required')),
-    lastName: Yup.string().required(t('required')),
+      .required(t("required")),
+    firstName: Yup.string().required(t("required")),
+    lastName: Yup.string().required(t("required")),
     address: Yup.object({
-      streetNumber: Yup.string().required(t('required')),
-      ward: Yup.string().required(t('required')),
-      district: Yup.string().required(t('required')),
-      province: Yup.string().required(t('required')),
+      streetNumber: Yup.string().required(t("required")),
+      ward: Yup.string().required(t("required")),
+      district: Yup.string().required(t("required")),
+      province: Yup.string().required(t("required")),
     }),
   });
 
@@ -242,7 +257,7 @@ const Checkout = () => {
       },
       paymentMethod: { id: values.paymentMethodId },
       voucher: voucher,
-      feeShip: shippingFee,
+      feeShip: feeShip,
     };
 
     console.log("Data: ", data);
@@ -375,7 +390,7 @@ const Checkout = () => {
                       <div className="col-md-6">
                         <FormikControl
                           control="input"
-                          label={t('First name')}
+                          label={t("First name")}
                           name="firstName"
                           readOnly
                         />
@@ -533,10 +548,6 @@ const Checkout = () => {
                                   className="btn-close"
                                   data-bs-dismiss="modal"
                                   aria-label="Close"
-                                  onClick={() => {
-                                    setVoucherId(0);
-                                    setVoucher({});
-                                  }}
                                 />
                               </div>
                               {arrVoucher.length > 0 &&

@@ -41,7 +41,7 @@ const Order = () => {
     if (res && res.result) {
       const data = res.result;
       const reverseData = data
-        .filter((e) => e.payment.name != "Cancel")
+        .filter((e) => e.paymentMethod.name != "Cancel")
         .reverse()
         .map((element, index) => ({
           ...element,
