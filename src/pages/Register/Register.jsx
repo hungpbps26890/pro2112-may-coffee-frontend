@@ -25,18 +25,18 @@ const Register = () => {
   const regexPhoneNumber = /^(84|0[3|5|7|8|9])+([0-9]{8})/;
 
   const validationSchema = Yup.object({
-    firstName: Yup.string().required("Required"),
-    lastName: Yup.string().required("Required"),
-    email: Yup.string().email("Invalid email").required("Required"),
+    firstName: Yup.string().required(t('required')),
+    lastName: Yup.string().required(t('required')),
+    email: Yup.string().email("Invalid email").required(t('required')),
     phoneNumber: Yup.string()
-      .matches(regexPhoneNumber, "Phone number is not valid")
-      .required("Required"),
+      .matches(regexPhoneNumber, t('phonevalid'))
+      .required(t('required')),
     password: Yup.string()
-      .required("Required")
-      .min(8, "Password must be at least 8 characters"),
+      .required(t('required'))
+      .min(8, t('passMin')),
     confirmedPassword: Yup.string()
-      .required("Required")
-      .oneOf([Yup.ref("password")], "Passwords must be match"),
+      .required(t('required'))
+      .oneOf([Yup.ref("password")], t('confirmPass')),
   });
 
   const onSubmit = (values) => {

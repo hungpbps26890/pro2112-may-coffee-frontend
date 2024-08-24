@@ -20,10 +20,10 @@ const Login = () => {
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email").required(t('required')),
+    email: Yup.string().email(t("Invalid email")).required(t('required')),
     password: Yup.string()
       .required(t('required'))
-      .min(8, "Password must be at least 8 characters"),
+      .min(8, t('passMin')),
   });
 
   const onSubmit = (values) => {

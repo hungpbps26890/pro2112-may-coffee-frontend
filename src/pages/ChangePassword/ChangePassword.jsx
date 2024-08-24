@@ -24,15 +24,15 @@ const ChangePassword = () => {
   const validationSchema = Yup.object({
     password: Yup.string()
       .required(t('required'))
-      .min(8, "Password must be at least 8 characters"),
+      .min(8, t('passMin')),
     newPassword: Yup.string()
       .required(t('required'))
-      .min(8, "Password must be at least 8 characters"),
+      .min(8, t('passMin')),
     confirmedNewPassword: Yup.string()
       .required(t('required'))
       .oneOf(
         [Yup.ref("newPassword")],
-        "Confirmed password must be match new password"
+        t('confirmPass')
       ),
   });
 

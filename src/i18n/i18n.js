@@ -71,7 +71,11 @@ const resources = {
         "New Password": "New Password",
         "Confirmed Password": "Confirmed Password",
         "Password": "Password",
-        "Please login!": "Please login!",
+        "phonevalid": "Phone number is not valid",
+        "passMin": "Password must be at least 8 characters",
+        "confirmPass": "Passwords must be match",
+        "Invalid email": "Invalid email",
+
 
         
 
@@ -153,7 +157,14 @@ const resources = {
         "New Password": "Mật khẩu mới",
         "Confirmed Password": "Xác nhận mật khẩu",
         "Password": "Mật khẩu",
-        "Please login!": "Hãy đăng nhập",
+        "phonevalid": "Số điện thoại không hợp lệ",
+        "passMin": "Mật khẩu phải có ít nhất 8 ký tự",
+        "confirmPass": "Mật khẩu phải trùng khớp",
+        "Invalid email": "Email không hợp lệ",
+
+
+
+
 
 
 
@@ -239,6 +250,12 @@ const resources = {
         "New Password": "新密码",
         "Confirmed Password": "确认密码",
         "Password": "密码",
+        "phonevalid": "电话号码无效",
+        "passMin": "密码必须至少包含 8 个字符",
+        "confirmPass": "密码必须匹配",
+        "Invalid email": "电子邮件无效",
+        
+
 
 
 
