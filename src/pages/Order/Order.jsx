@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { fetchGetOrdersByUser } from "../../services/OrderService";
+import {
+  fetchGetOrdersByUser,
+  putCreateOrder,
+} from "../../services/OrderService";
 import { NumericFormat } from "react-number-format";
 import { format as dateFormat } from "date-fns";
 import { useNavigate } from "react-router-dom";
@@ -41,7 +44,7 @@ const Order = () => {
     if (res && res.result) {
       const data = res.result;
       const reverseData = data
-        .filter((e) => e.paymentMethod.name != "Cancel")
+        .filter((e) => e.orderStatus.name != "Cancel")
         .reverse()
         .map((element, index) => ({
           ...element,
@@ -51,8 +54,20 @@ const Order = () => {
     }
   };
 
-  const handleCancel = () => {
-    toast.success("Cancel order successfully!");
+  //test
+  const handleCancel = async (id) => {
+    var data = {
+      id: id,
+      orderStatus: { id: 6, name: "Cancel" },
+      paymentStatus: false,
+    };
+
+    const res = await putCreateOrder(data);
+
+    if (res && res.result) {
+      toast.success("Cancel order successfully!");
+    }
+    setTimeout(() => window.location.reload(), 3000);
   };
 
   const [rates, setRate] = useState([false, false, false, false, false]);
@@ -166,7 +181,7 @@ const Order = () => {
               className={`btn btn-outline-danger ${
                 order.orderStatus.id > 1 ? "disabled" : ""
               }`}
-              onClick={handleCancel}
+              onClick={() => handleCancel(order.id)}
             >
               {t("Cancel")}
             </button>
@@ -256,7 +271,7 @@ const Order = () => {
                         </div>
                         <div className="modal-footer">
                           <button
-                            type="button"
+                            type="reset"
                             className="btn btn-secondary"
                             data-bs-dismiss="modal"
                           >
