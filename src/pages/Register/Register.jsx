@@ -27,7 +27,7 @@ const Register = () => {
   const validationSchema = Yup.object({
     firstName: Yup.string().required(t('required')),
     lastName: Yup.string().required(t('required')),
-    email: Yup.string().email("Invalid email").required(t('required')),
+    email: Yup.string().email(t("Invalid email")).required(t('required')),
     phoneNumber: Yup.string()
       .matches(regexPhoneNumber, t('phonevalid'))
       .required(t('required')),

@@ -45,13 +45,13 @@ const Profile = () => {
   const regexPhoneNumber = /^(84|0[3|5|7|8|9])+([0-9]{8})/;
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email").required(t('required')),
+    email: Yup.string().email(t("Invalid email")).required(t('required')),
     phoneNumber: Yup.string()
-      .matches(regexPhoneNumber, "Phone number is not valid")
+      .matches(regexPhoneNumber, t('phonevalid'))
       .required(t('required')),
     firstName: Yup.string().required(t('required')),
     lastName: Yup.string().required(t('required')),
-    dob: Yup.date().required(t('required')),
+    
   });
 
   const onSubmit = (values) => {

@@ -129,7 +129,7 @@ const resources = {
         "Order Status":"Trạng thái đơn hàng",
         "Payment Method":"Phương thức thanh toán",
         "Payment Status":"Trạng thái thanh toán",
-        "Details": "Chi tiết đơn hàng",
+        "Details": "Chi tiết",
         "Your Orders": "Đơn hàng của bạn",
         "Forgot Password": "Quên mật khẩu",
         "Reset Password": "Đặt lại mật khẩu",
