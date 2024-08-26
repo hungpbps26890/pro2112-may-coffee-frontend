@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   fetchGetOrdersByUser,
-  putCreateOrder,
+  putUpdateOrderStatus,
 } from "../../services/OrderService";
 import { NumericFormat } from "react-number-format";
 import { format as dateFormat } from "date-fns";
@@ -15,10 +15,14 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "../../components/FormControl/FormikControl";
 import { Space, Table } from "antd";
+import { fetchGetAllOrderStatuses } from "../../services/OrderStatusService";
 
 const Order = () => {
   const { t } = useTranslation();
   const [orders, setOrders] = useState([]);
+  const [orderStatuses, setOrderStatuses] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
   const [rating, setRating] = useState();
   const [comment, setComment] = useState("");
   const [orderId, setOrderId] = useState();
@@ -34,40 +38,54 @@ const Order = () => {
     comment: Yup.string().required(t("required")),
   });
 
-  useEffect(() => {
-    getOrdersByUser();
-  }, []);
-
   const getOrdersByUser = async () => {
     const res = await fetchGetOrdersByUser();
 
     if (res && res.result) {
-      const data = res.result;
-      const reverseData = data
-        .filter((e) => e.orderStatus.name != "Cancel")
+      const data = res.result
         .reverse()
-        .map((element, index) => ({
-          ...element,
-          key: index + 1,
-        }));
-      setOrders(reverseData);
+        .map((item, index) => ({ ...item, key: index + 1 }));
+
+      console.log("Orders by user: ", data);
+
+      setOrders(data);
     }
   };
 
-  //test
+  const getAllOrderStatuses = async () => {
+    const res = await fetchGetAllOrderStatuses();
+
+    if (res && res.result) {
+      const orderStatuses = res.result;
+      setOrderStatuses(
+        orderStatuses.map((orderStatus) => ({
+          text: orderStatus.name,
+          value: orderStatus.id,
+        }))
+      );
+    }
+  };
+
+  useEffect(() => {
+    getOrdersByUser();
+    getAllOrderStatuses();
+  }, []);
+
   const handleCancel = async (id) => {
-    var data = {
+    const data = {
       id: id,
-      orderStatus: { id: 6, name: "Cancel" },
+      orderStatus: { id: 6 },
       paymentStatus: false,
     };
 
-    const res = await putCreateOrder(data);
+    const res = await putUpdateOrderStatus(data);
 
     if (res && res.result) {
       toast.success("Cancel order successfully!");
+      getOrdersByUser();
+    } else {
+      toast.error("Error canceling order!");
     }
-    setTimeout(() => window.location.reload(), 3000);
   };
 
   const [rates, setRate] = useState([false, false, false, false, false]);
@@ -91,78 +109,78 @@ const Order = () => {
 
   const columns = [
     {
+      key: "1",
       title: "#",
       dataIndex: "key",
-      rowScope: "row",
     },
     {
-      title: <th>{t("Date")}</th>,
+      key: "2",
+      title: <>{t("Date")}</>,
       dataIndex: "createDate",
-      key: "createDate",
+      width: 200,
       render: (createDate) => (
-        <td className="ant-table-cell ant-table-column-sort">
-          {dateFormat(createDate, "dd/MM/yyyy, HH:mm:ss")}
-        </td>
+        <>{dateFormat(createDate, "dd/MM/yyyy, HH:mm:ss")}</>
       ),
+      sorter: (a, b) => new Date(a.createDate) - new Date(b.createDate),
     },
     {
-      title: <th>{t("Total")}</th>,
+      key: "3",
+      title: <>{t("Total")}</>,
       dataIndex: "totalPrice",
-      key: "totalPrice",
+      width: 120,
       render: (totalPrice) => (
-        <td className="ant-table-cell ant-table-column-sort">
-          <NumericFormat
-            value={totalPrice}
-            displayType="text"
-            thousandSeparator=","
-            suffix=" đ"
-          />
-        </td>
+        <NumericFormat
+          value={totalPrice}
+          displayType="text"
+          thousandSeparator=","
+          suffix=" đ"
+        />
       ),
+      sorter: (firstRecord, secondRecord) =>
+        firstRecord.totalPrice - secondRecord.totalPrice,
     },
     {
-      title: <th>{t("Order Status")}</th>,
+      key: "4",
+      title: <>{t("Order Status")}</>,
       dataIndex: "orderStatus",
-      key: "orderStatus",
-      render: (orderStatus) => (
-        <td className="ant-table-cell ant-table-column-sort">
-          {orderStatus.name}
-        </td>
-      ),
+      filters: orderStatuses,
+      onFilter: (value, record) => {
+        return record.orderStatus.id === value;
+      },
+      render: (orderStatus) => <>{orderStatus.name}</>,
     },
     {
-      title: <th>{t("Payment Method")}</th>,
+      key: "5",
+      title: <>{t("Payment Method")}</>,
       dataIndex: "paymentMethod",
-      key: "paymentMethod",
-      render: (paymentMethod) => (
-        <td className="ant-table-cell ant-table-column-sort">
-          {paymentMethod.name}
-        </td>
-      ),
+      filters: [
+        { text: "COD", value: 1 },
+        { text: "VNPAY", value: 2 },
+        { text: "MoMo", value: 3 },
+      ],
+      onFilter: (value, record) => {
+        return record.paymentMethod.id === value;
+      },
+      render: (paymentMethod) => <>{paymentMethod.name}</>,
     },
     {
-      title: <th>{t("Payment Status")}</th>,
+      key: "6",
+      title: <>{t("Payment Status")}</>,
       dataIndex: "paymentStatus",
-      key: "paymentStatus",
-      render: (paymentStatus) => (
-        <td className="ant-table-cell ant-table-column-sort">
-          {paymentStatus ? "Paid" : "Not paid yet"}
-        </td>
-      ),
+      render: (paymentStatus) => <>{paymentStatus ? "Paid" : "Not paid yet"}</>,
+      filters: [
+        { text: "Paid", value: true },
+        { text: "Not paid yet", value: false },
+      ],
+      onFilter: (value, record) => {
+        return record.paymentStatus === value;
+      },
     },
     {
-      title: "",
-      dataIndex: "id",
-      key: "action",
-      render: (_, order) => (
-        <Space size="middle">
-          <td>
-            <button
-              className="btn btn-outline-primary m-2"
-              onClick={() => navigator(`/order-details/${order.id}`)}
-            >
-              {t("Details")}
-            </button>
+      key: "6",
+      render: (record) => {
+        return (
+          <Space gap="middle" justify="center" align="center">
             <button
               className="btn btn-outline-primary m-2"
               type="button"
@@ -171,23 +189,29 @@ const Order = () => {
               onClick={() =>
                 setInitialValues({
                   ...initialValues,
-                  orderId: order.id,
+                  orderId: record.id,
                 })
               }
             >
               {t("Review")}
             </button>
             <button
+              className="btn btn-outline-primary m-2"
+              onClick={() => navigator(`/order-details/${record.id}`)}
+            >
+              {t("Details")}
+            </button>
+            <button
               className={`btn btn-outline-danger ${
-                order.orderStatus.id > 1 ? "disabled" : ""
+                record.orderStatus.id > 1 ? "disabled" : ""
               }`}
-              onClick={() => handleCancel(order.id)}
+              onClick={() => handleCancel(record.id)}
             >
               {t("Cancel")}
             </button>
-          </td>
-        </Space>
-      ),
+          </Space>
+        );
+      },
     },
   ];
 
@@ -197,19 +221,19 @@ const Order = () => {
         <div className="row mb-3">
           <div className="card border-0">
             <div className="templatemo-content-widget white-bg">
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: 20,
+              <h4>{t("Your Orders")}</h4>
+              <Table
+                columns={columns}
+                dataSource={orders}
+                pagination={{
+                  current: pageNumber,
+                  pageSize: pageSize,
+                  onChange: (pageNumber, pageSize) => {
+                    setPageNumber(pageNumber), setPageSize(pageSize);
+                  },
                 }}
-              >
-                <h4>{t("Your Orders")}</h4>
-              </div>
-              <div className="panel panel-default table-responsive">
-                <Table columns={columns} dataSource={orders} />
-              </div>
+                scroll={{ x: true }}
+              ></Table>
             </div>
             <div
               className="row modal fade"
